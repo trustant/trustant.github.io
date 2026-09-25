@@ -594,13 +594,13 @@
       <nav id="site-nav" class="nav-menu" data-navigation aria-label="Site">
         
         
-        <a href="https://trustable.it/documentation/" class="nav-link">Documentation</a>
+        <a href="https://trustant.ai/documentation/" class="nav-link">Documentation</a>
         
         
-        <a href="https://trustable.it/architecture/" class="nav-link">Architecture</a>
+        <a href="https://trustant.ai/architecture/" class="nav-link">Architecture</a>
         
         
-        <a href="https://trustable.it/apps/" class="nav-link">Templates</a>
+        <a href="https://trustant.ai/apps/" class="nav-link">Templates</a>
         
         
         <a href="/#credits" class="nav-link" data-slow-scroll>OpenSource</a>
@@ -648,7 +648,7 @@
           <ul>
             <li>
               <a
-                href="https://trustable.it/documentation/"
+                href="https://trustant.ai/documentation/"
                 
                 >Overview</a
               >
@@ -657,7 +657,7 @@
             
             <li>
               <a
-                href="https://trustable.it/documentation/setup/"
+                href="https://trustant.ai/documentation/setup/"
                 aria-current="page"
                 >Setup</a
               >
@@ -666,7 +666,7 @@
             
             <li>
               <a
-                href="https://trustable.it/documentation/config/"
+                href="https://trustant.ai/documentation/config/"
                 
                 >Configuration</a
               >
@@ -675,7 +675,7 @@
             
             <li>
               <a
-                href="https://trustable.it/documentation/list/"
+                href="https://trustant.ai/documentation/list/"
                 
                 >App List</a
               >
@@ -684,7 +684,7 @@
             
             <li>
               <a
-                href="https://trustable.it/documentation/edit/"
+                href="https://trustant.ai/documentation/edit/"
                 
                 >App Edit</a
               >
@@ -693,7 +693,7 @@
             
             <li>
               <a
-                href="https://trustable.it/documentation/chat/"
+                href="https://trustant.ai/documentation/chat/"
                 
                 >App Chat</a
               >
@@ -702,7 +702,7 @@
             
             <li>
               <a
-                href="https://trustable.it/documentation/template/"
+                href="https://trustant.ai/documentation/template/"
                 
                 >Templates</a
               >
@@ -727,7 +727,7 @@ can create an application, Trustable needs to know <strong>which AI provider pow
 the assistant</strong> — the model that turns your descriptions into working code.</p>
 <p>This is the only mandatory setup step. Everything else has a sensible default.</p>
 <h2 id="choosing-a-provider">Choosing a provider</h2>
-<p><img src="https://trustable.it/documentation/setup/images/SCR-20260814-prxs.png" alt="image" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/SCR-20260814-prxs.png" alt="image" /></p>
 <p>The <strong>Select your AI provider</strong> screen offers three ways to get a model, and the
 difference between them is <em>where the model runs and who pays for it</em>:</p>
 <table><thead><tr><th>Card</th><th>What it is</th><th>You need</th></tr></thead><tbody>
@@ -737,7 +737,7 @@ difference between them is <em>where the model runs and who pays for it</em>:</p
 </tbody></table>
 <p>Whichever you pick, the choice is saved in your workspace configuration and
 Trustable goes straight to the application list next time. You can change it
-later from the Configure page — see <a href="https://trustable.it/documentation/config/">Configuration</a>.</p>
+later from the Configure page — see <a href="https://trustant.ai/documentation/config/">Configuration</a>.</p>
 <p>Once a provider is selected, Trustable runs a short <strong>configuration pass</strong>: it
 pulls the models it needs (for Cloud AI), writes the runtime configuration for
 the Pi coding agent, and finishes with a live <em>“Reply with exactly: OK”</em> probe
@@ -745,7 +745,7 @@ against the model. Only when that probe succeeds are you let through to the
 application list — an unusable model would make the whole workbench useless, so
 a failed check always sends you back to this screen.</p>
 <h2 id="cloud-ai">Cloud AI</h2>
-<p><img src="https://trustable.it/documentation/setup/images/2026-08-19-10-45-09.png" alt="" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/2026-08-19-10-45-09.png" alt="" /></p>
 <p>Cloud AI is the fastest way to start. Trustable uses the Ollama server bundled
 inside it, and that server forwards your requests to Ollama Cloud’s large
 models, so you get cloud-class quality without installing anything or managing
@@ -756,7 +756,7 @@ Instead, you pair this machine with your Ollama account once.</p>
 <h3 id="sign-in-to-ollama-cloud">Sign in to Ollama Cloud</h3>
 <p>The first configuration attempt is expected to fail if you have never paired
 this device. Trustable detects the authentication failure and shows:</p>
-<p><img src="https://trustable.it/documentation/setup/images/SCR-20260814-pscy.png" alt="image" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/SCR-20260814-pscy.png" alt="image" /></p>
 <p><strong>Sign-in required.</strong> Trustable has run <code>ollama signin</code> in the background and
 scraped the pairing URL out of it. Click <strong>“Click here to log in to Ollama
 Cloud”</strong> — it opens in a new tab, so this page stays where it is.</p>
@@ -765,16 +765,16 @@ Cloud”</strong> — it opens in a new tab, so this page stays where it is.</p>
 to run <code>ollama signin</code> yourself in a terminal and then click <strong>Retry</strong>.</p>
 </blockquote>
 <h3 id="connect-the-device">Connect the device</h3>
-<p><img src="https://trustable.it/documentation/setup/images/SCR-20260814-psfx.png" alt="image" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/SCR-20260814-psfx.png" alt="image" /></p>
 <p>The Ollama page asks you to confirm your account and pair this specific machine.
 The two names shown are the <strong>host</strong> and the <strong>cluster</strong> Trustable is running on,
 so you can tell one installation from another. Click <strong>Connect</strong>.</p>
-<p><img src="https://trustable.it/documentation/setup/images/SCR-20260814-pshj.png" alt="image" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/SCR-20260814-pshj.png" alt="image" /></p>
 <p><strong>Device Connected Successfully.</strong> The identity is now stored in the Trustable
 workspace, so it survives restarts — you only do this once per installation.
 Close this tab.</p>
 <h3 id="back-in-trustable-press-retry">Back in Trustable: press Retry</h3>
-<p><img src="https://trustable.it/documentation/setup/images/SCR-20260814-psoc.png" alt="image" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/SCR-20260814-psoc.png" alt="image" /></p>
 <p>Return to the Trustable tab and click <strong>Retry</strong>. The configuration pass reruns,
 now authenticated, and streams its progress:</p>
 <ul>
@@ -787,7 +787,7 @@ provider, endpoint and models to use.</li>
 </ul>
 <p>Click <strong>CONTINUE</strong> to reach your application list. Setup is done.</p>
 <h2 id="sovereign-ai">Sovereign AI</h2>
-<p><img src="https://trustable.it/documentation/setup/images/2026-08-19-10-45-30.png" alt="" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/2026-08-19-10-45-30.png" alt="" /></p>
 <p>Sovereign AI routes your requests through Regolo.AI, an EU-hosted inference
 provider, and bills them as <strong>credits</strong> rather than a subscription. Registering
 gives you 100 credits free, which is enough to build and iterate on a first
@@ -796,13 +796,13 @@ application.</p>
 as an overlay. When you finish, that page hands the endpoint and API key straight
 back to Trustable — you never copy and paste a key.</p>
 <h3 id="sign-in">Sign in</h3>
-<p><img src="https://trustable.it/documentation/setup/images/SCR-20260814-psto.png" alt="image" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/SCR-20260814-psto.png" alt="image" /></p>
 <p>If you already have a Trustable AI account, use the <strong>Sign in</strong> tab to retrieve
 your API key. The same page carries <strong>Forgot password?</strong> and <strong>Top up your
 account</strong> links; topping up is also reachable later from inside the workbench
 when your credits run low.</p>
 <h3 id="register-an-account">Register an account</h3>
-<p><img src="https://trustable.it/documentation/setup/images/SCR-20260814-psww.png" alt="image" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/SCR-20260814-psww.png" alt="image" /></p>
 <p>Otherwise switch to <strong>Create account</strong>. The form asks for your name, email,
 phone (with country code), a password of at least 8 characters, and optionally
 your company and LinkedIn. You must accept the Privacy Policy and pass the
@@ -824,7 +824,7 @@ retries automatically.</p>
 network, a vLLM deployment, a llama.cpp server, or any other service that speaks
 the OpenAI-compatible API. Nothing about your prompts or code leaves the machines
 you control, and there is no per-token cost.</p>
-<p><img src="https://trustable.it/documentation/setup/images/SCR-20260814-ptbd.png" alt="image" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/SCR-20260814-ptbd.png" alt="image" /></p>
 <p>The dialog asks for two things:</p>
 <ul>
 <li><strong>Base URL</strong> — required. It must end in <code>/v1</code>, the OpenAI-compatible API root,
@@ -833,7 +833,7 @@ because a wrong URL would otherwise fail much later in a confusing place.</li>
 <li><strong>API key</strong> — optional. Many self-hosted endpoints need none; that is exactly
 the case this card is named for.</li>
 </ul>
-<p><img src="https://trustable.it/documentation/setup/images/2026-08-19-10-26-10.png" alt="image" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/2026-08-19-10-26-10.png" alt="image" /></p>
 <p>A typical entry is a plain <code>http://</code> address on your LAN, like an Ollama server
 listening on port <code>11434</code>. Because it is <code>http://</code> and unauthenticated, it saves
 with no further questions.</p>
@@ -843,13 +843,13 @@ you to confirm — a public HTTPS endpoint almost always requires a key, so an
 empty one is usually a mistake rather than a choice.</p>
 </blockquote>
 <h3 id="model-discovery">Model discovery</h3>
-<p><img src="https://trustable.it/documentation/setup/images/SCR-20260814-pthx.png" alt="image" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/SCR-20260814-pthx.png" alt="image" /></p>
 <p>When you click <strong>SAVE</strong>, Trustable immediately queries the endpoint for its model
 list rather than trusting the URL blindly. On success it reports how many models
 it found and tells you the one remaining step. A broken endpoint, or one that
 returns no models at all, is reported right in the dialog and is <strong>never saved</strong>.</p>
 <h3 id="choose-the-default-model">Choose the default model</h3>
-<p><img src="https://trustable.it/documentation/setup/images/SCR-20260814-ptup.png" alt="image" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/SCR-20260814-ptup.png" alt="image" /></p>
 <p>Trustable then takes you to the Configure page with a banner: <em>“Choose the Pi
 model to complete the runtime setup.”</em></p>
 <p>Unlike Cloud AI and Sovereign AI, a private endpoint carries no catalog telling
@@ -869,7 +869,7 @@ context size and a <strong>FOR CODING</strong> verdict. Models are marked either
 <li><strong>Pi Model → Default Model</strong> — the dropdown where you pick the model the
 coding assistant will use. Only <code>Available</code> models are offered.</li>
 </ul>
-<p><img src="https://trustable.it/documentation/setup/images/SCR-20260814-pvbz.png" alt="image" /></p>
+<p><img src="https://trustant.ai/documentation/setup/images/SCR-20260814-pvbz.png" alt="image" /></p>
 <p>Click <strong>SAVE &amp; CONFIGURE</strong> to finish. Trustable writes the configuration, runs
 the <em>“Reply with exactly: OK”</em> probe against the model you chose, and — when it
 answers — takes you to the application list.</p>
@@ -878,9 +878,9 @@ answers — takes you to the application list.</p>
 <em>“Please select the default model before saving.”</em></p>
 </blockquote>
 <h2 id="next">Next</h2>
-<p>With a provider configured, continue to the <a href="https://trustable.it/documentation/list/">App List</a>
+<p>With a provider configured, continue to the <a href="https://trustant.ai/documentation/list/">App List</a>
 to create your first application, or to
-<a href="https://trustable.it/documentation/config/">Configuration</a> to review models, credits and
+<a href="https://trustant.ai/documentation/config/">Configuration</a> to review models, credits and
 per-application settings.</p>
 
 
@@ -920,13 +920,13 @@ per-application settings.</p>
             <a href="/" class="paragraph s">Trustant</a>
             
             
-            <a href="https://trustable.it/documentation/" class="paragraph s">Documentation</a>
+            <a href="https://trustant.ai/documentation/" class="paragraph s">Documentation</a>
             
             
-            <a href="https://trustable.it/architecture/" class="paragraph s">Architecture</a>
+            <a href="https://trustant.ai/architecture/" class="paragraph s">Architecture</a>
             
             
-            <a href="https://trustable.it/apps/" class="paragraph s">Templates</a>
+            <a href="https://trustant.ai/apps/" class="paragraph s">Templates</a>
             
             <a
               href="https://github.com/trustant/trustant"

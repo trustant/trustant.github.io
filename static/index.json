@@ -26,7 +26,7 @@
         "name": "truingest",
         "title": "Document Ingest",
         "repo": "https://github.com/trustable-ai/truingest",
-        "icon": "https://trustable.it/images/trustable-ai-truingest.png",
+        "icon": "https://trustant.aihttps://trustable.it/images/trustable-ai-truingest.png",
         "description": "Document Ingestion"
       }
     ],
@@ -35,21 +35,21 @@
         "name": "truk8s",
         "title": "Kubernetes Manager",
         "repo": "https://github.com/trustable-ai/truk8s",
-        "icon": "https://trustable.it/images/trustable-ai-truk8s.png",
+        "icon": "https://trustant.aihttps://trustable.it/images/trustable-ai-truk8s.png",
         "description": "Kubernetes Manager"
       },
       {
         "name": "securitycheck",
         "title": "Security Check",
         "repo": "https://github.com/trustable-ai/securitycheck",
-        "icon": "https://trustable.it/images/trustable-ai-securitycheck.png",
+        "icon": "https://trustant.aihttps://trustable.it/images/trustable-ai-securitycheck.png",
         "description": "Security Checker"
       },
       {
         "name": "tetris",
         "title": "Tetris",
         "repo": "https://github.com/trustable-ai/tetris",
-        "icon": "https://trustable.it/images/trustable-ai-tetris.png",
+        "icon": "https://trustant.aihttps://trustable.it/images/trustable-ai-tetris.png",
         "description": "Tetris Game"
       }
     ],
@@ -58,35 +58,35 @@
         "name": "apistatusmonitor",
         "title": "API Status Monitor",
         "repo": "https://github.com/trustable-ai/apistatusmonitor",
-        "icon": "https://trustable.it/images/trustable-ai-apistatusmonitor.png",
+        "icon": "https://trustant.aihttps://trustable.it/images/trustable-ai-apistatusmonitor.png",
         "description": "API Status Mpnitor"
       },
       {
         "name": "appsuite",
         "title": "App Suite",
         "repo": "https://github.com/trustable-ai/appsuite",
-        "icon": "https://trustable.it/images/trustable-ai-appsuite.png",
+        "icon": "https://trustant.aihttps://trustable.it/images/trustable-ai-appsuite.png",
         "description": "Simple Productivity App suite"
       },
       {
         "name": "minicrm",
         "title": "Mini CRM",
         "repo": "https://github.com/trustable-ai/minicrm",
-        "icon": "https://trustable.it/images/trustable-ai-minicrm.png",
+        "icon": "https://trustant.aihttps://trustable.it/images/trustable-ai-minicrm.png",
         "description": "Mini Customer Relation Manager"
       },
       {
         "name": "newsaggregator",
         "title": "New Aggregator",
         "repo": "https://github.com/trustable-ai/newsaggregator",
-        "icon": "https://trustable.it/images/trustable-ai-newsaggregator.png",
+        "icon": "https://trustant.aihttps://trustable.it/images/trustable-ai-newsaggregator.png",
         "description": "News Aggregator"
       },
       {
         "name": "projectdashboard",
         "title": "Project Dashboard",
         "repo": "https://github.com/trustable-ai/projectdashboard",
-        "icon": "https://trustable.it/images/trustable-ai-projectdashboard.png",
+        "icon": "https://trustant.aihttps://trustable.it/images/trustable-ai-projectdashboard.png",
         "description": "Project Dashboard"
       }
     ],
@@ -95,28 +95,28 @@
         "name": "jsonformatter",
         "title": "JSON Formatter",
         "repo": "https://github.com/trustable-ai/jsonformatter",
-        "icon": "https://trustable.it/images/trustable-ai-jsonformatter.png",
+        "icon": "https://trustant.aihttps://trustable.it/images/trustable-ai-jsonformatter.png",
         "description": "JSON Formatter"
       },
       {
         "name": "postgresqlconsole",
         "title": "PostgreSQL Console",
         "repo": "https://github.com/trustable-ai/postgresqlconsole",
-        "icon": "https://trustable.it/images/trustable-ai-postgresqlconsole.png",
+        "icon": "https://trustant.aihttps://trustable.it/images/trustable-ai-postgresqlconsole.png",
         "description": "PostgreSQL Console"
       },
       {
         "name": "redisconsole",
         "title": "REDIS Console",
         "repo": "https://github.com/trustable-ai/redisconsole",
-        "icon": "https://trustable.it/images/trustable-ai-redisconsole.png",
+        "icon": "https://trustant.aihttps://trustable.it/images/trustable-ai-redisconsole.png",
         "description": "REDIS Console"
       },
       {
         "name": "urlmetadata",
         "title": "URL Metadata",
         "repo": "https://github.com/trustable-ai/urlmetadata",
-        "icon": "https://trustable.it/images/trustable-ai-urlmetadata.png",
+        "icon": "https://trustant.aihttps://trustable.it/images/trustable-ai-urlmetadata.png",
         "description": "URL MetaData"
       }
     ]

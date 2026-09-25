@@ -594,13 +594,13 @@
       <nav id="site-nav" class="nav-menu" data-navigation aria-label="Site">
         
         
-        <a href="https://trustable.it/documentation/" class="nav-link">Documentation</a>
+        <a href="https://trustant.ai/documentation/" class="nav-link">Documentation</a>
         
         
-        <a href="https://trustable.it/architecture/" class="nav-link">Architecture</a>
+        <a href="https://trustant.ai/architecture/" class="nav-link">Architecture</a>
         
         
-        <a href="https://trustable.it/apps/" class="nav-link">Templates</a>
+        <a href="https://trustant.ai/apps/" class="nav-link">Templates</a>
         
         
         <a href="/#credits" class="nav-link" data-slow-scroll>OpenSource</a>
@@ -648,7 +648,7 @@
           <ul>
             <li>
               <a
-                href="https://trustable.it/architecture/"
+                href="https://trustant.ai/architecture/"
                 
                 >Overview</a
               >
@@ -657,7 +657,7 @@
             
             <li>
               <a
-                href="https://trustable.it/architecture/introducing-nuvolaris/"
+                href="https://trustant.ai/architecture/introducing-nuvolaris/"
                 
                 >Introducing Nuvolaris</a
               >
@@ -666,7 +666,7 @@
             
             <li>
               <a
-                href="https://trustable.it/architecture/serverless-engine/"
+                href="https://trustant.ai/architecture/serverless-engine/"
                 
                 >The Serverless Engine</a
               >
@@ -675,7 +675,7 @@
             
             <li>
               <a
-                href="https://trustable.it/architecture/components/"
+                href="https://trustant.ai/architecture/components/"
                 
                 >Nuvolaris Components</a
               >
@@ -684,7 +684,7 @@
             
             <li>
               <a
-                href="https://trustable.it/architecture/integrated-services/"
+                href="https://trustant.ai/architecture/integrated-services/"
                 aria-current="page"
                 >Integrated Services</a
               >
@@ -693,7 +693,7 @@
             
             <li>
               <a
-                href="https://trustable.it/architecture/supported-clouds/"
+                href="https://trustant.ai/architecture/supported-clouds/"
                 
                 >Supported Clouds</a
               >
@@ -716,16 +716,16 @@
         <p>Nuvolaris includes a number of integrated services as shown in Figure 4: the
 data services that applications use directly, and the operational services that
 keep the platform healthy.</p>
-<p><img src="https://trustable.it/architecture/integrated-services/_page_11_Picture_3.jpeg" alt="Data services: Redis, Milvus, SeaweedFS and PostgreSQL" /></p>
-<p><img src="https://trustable.it/architecture/integrated-services/_page_11_Picture_4.jpeg" alt="Prometheus monitoring" /></p>
-<p><img src="https://trustable.it/architecture/integrated-services/_page_11_Picture_5.jpeg" alt="Velero backup" /></p>
+<p><img src="https://trustant.ai/architecture/integrated-services/_page_11_Picture_3.jpeg" alt="Data services: Redis, Milvus, SeaweedFS and PostgreSQL" /></p>
+<p><img src="https://trustant.ai/architecture/integrated-services/_page_11_Picture_4.jpeg" alt="Prometheus monitoring" /></p>
+<p><img src="https://trustant.ai/architecture/integrated-services/_page_11_Picture_5.jpeg" alt="Velero backup" /></p>
 <p><strong>Figure 4</strong></p>
 <h2 id="1-redis-cache">1. Redis Cache</h2>
 <p>Redis (Remote Dictionary Server) is an open-source, in-memory data structure store primarily used as a cache and message broker. Redis is particularly well-suited for caching due to its low latency and high throughput, as it stores data directly in memory, unlike traditional databases that rely on disk storage.</p>
 <p>In a serverless platform like Nuvolaris, Redis acts as a high-performance layer to cache dynamic content, optimises response times and improves overall application speed.</p>
 <h2 id="2-milvus-vector-database">2. Milvus Vector Database</h2>
 <p>Milvus is an open-source vector database built for storing, indexing and searching the high-dimensional embeddings produced by AI models. Instead of matching exact values, it answers similarity queries — “which stored vectors are closest to this one” — over billions of entries, using indexes such as HNSW and IVF, and combines them with ordinary metadata filtering.</p>
-<p>In Nuvolaris, Milvus is the retrieval layer for AI workloads: it holds the embeddings of documents, images and other content so that applications built with <a href="https://trustable.it/documentation/">Trustable</a> can implement retrieval-augmented generation, semantic search and recommendation entirely on your own infrastructure, with no data leaving the cluster.</p>
+<p>In Nuvolaris, Milvus is the retrieval layer for AI workloads: it holds the embeddings of documents, images and other content so that applications built with <a href="https://trustant.ai/documentation/">Trustable</a> can implement retrieval-augmented generation, semantic search and recommendation entirely on your own infrastructure, with no data leaving the cluster.</p>
 <h2 id="3-seaweedfs-object-storage">3. SeaweedFS Object Storage</h2>
 <p>We include an S3 storage using SeaweedFS.</p>
 <p>SeaweedFS is an Apache 2.0 licensed open-source, Amazon S3-compatible distributed object store. It is designed around fast key-to-file lookups, which makes it particularly efficient at handling very large numbers of small objects, and it scales out by simply adding volume servers. Optional replication and erasure coding let you trade storage cost against durability without changing the S3 API your applications use.</p>
@@ -741,7 +741,7 @@ keep the platform healthy.</p>
 <h2 id="6-velero-backup">6. Velero Backup</h2>
 <p>Velero is an open-source tool for managing Kubernetes backups, disaster recovery, and migration. It’s designed specifically for Kubernetes clusters and provides reliable backup, restore, and migration of cluster resources and persistent volumes.</p>
 <p>For Nuvolaris, Velero is vital in ensuring business continuity, providing peace of mind with automated backups and quick recovery options, reducing data loss risk and maintaining application availability in the case of accidental deletion, corruption, or failure.</p>
-<p>Next: <a href="https://trustable.it/architecture/supported-clouds/">Supported Clouds</a>.</p>
+<p>Next: <a href="https://trustant.ai/architecture/supported-clouds/">Supported Clouds</a>.</p>
 
 
       </article>
@@ -780,13 +780,13 @@ keep the platform healthy.</p>
             <a href="/" class="paragraph s">Trustant</a>
             
             
-            <a href="https://trustable.it/documentation/" class="paragraph s">Documentation</a>
+            <a href="https://trustant.ai/documentation/" class="paragraph s">Documentation</a>
             
             
-            <a href="https://trustable.it/architecture/" class="paragraph s">Architecture</a>
+            <a href="https://trustant.ai/architecture/" class="paragraph s">Architecture</a>
             
             
-            <a href="https://trustable.it/apps/" class="paragraph s">Templates</a>
+            <a href="https://trustant.ai/apps/" class="paragraph s">Templates</a>
             
             <a
               href="https://github.com/trustant/trustant"
