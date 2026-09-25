@@ -1,0 +1,976 @@
+/* Trustant additions on top of the LaunchKit base (css/index.css).
+   Kept separate so the template files stay upgradeable. */
+
+/* ---------------------------------------------------------------------------
+   Terracotta theme.
+
+   A dark palette built on the mascot's own orange. Sampling images/trusty-ant.png
+   puts the ant at hue 20 deg, about #c06030 — a burnt terracotta. This theme keeps
+   that real tone rather than brightening it, with a sage second accent.
+
+   The template drives everything from these tokens, so overriding them retextures
+   the whole page. We override .theme-light (the class on <html>) so the template's
+   own relative-colour maths, which derives its values from --color-accent, does not
+   recompute them back to the blue theme.
+   --------------------------------------------------------------------------- */
+:root,
+.theme-light {
+  color-scheme: dark;
+
+  --color-background: #100c0a;
+  --color-background-blur: #100c0aeb;
+  --color-surface: #1c1512;
+  /* One step lighter, for hovered panels and buttons. */
+  --color-surface-hover: #241b17;
+
+  --color-text-primary: #f0e9e4;
+  --color-text-secondary: #c2b3a8;
+  --color-text-tertiary: #a6968b;
+
+  /* The ant's burnt orange, kept at its real tone. */
+  --color-accent: #e2703a;
+  --color-accent-hover: #ef7f49;
+  --color-accent-b: #e2703a29;
+  --color-accent-b-hover: #e2703a3d;
+  /* Buttons use dark ink on the orange: white on #e2703a is only ~2.6:1. */
+  --color-on-accent: #17100c;
+
+  --color-border-level-2: #30241f;
+  --color-border-level-3: #453630;
+
+  /* Warm bloom behind the hero instead of the template's blue wash. */
+  --color-gradient-bg-start: #e2703a1f;
+  --color-gradient-bg-end: #e2703a00;
+
+  /* Final CTA panel: a soft ember, replacing the pink/blue template gradient. */
+  --color-gradient-promo-start: #2a1a12;
+  --color-gradient-promo-end: #1a1a17;
+
+  /* Sage second accent, used for technical labels. */
+  --color-accent-2: #8fb996;
+}
+
+/* The logo is dark artwork, so invert it to read on the dark ground. */
+.nav-brand img,
+.footer-brand img {
+  filter: invert(1) brightness(1.08);
+}
+
+.eyebrow {
+  color: var(--color-accent-2);
+}
+
+/* The spec asks for a wider container than the template's 1008px. */
+.page-container {
+  max-width: 1160px;
+}
+
+/* Skip link — visible only once focused. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 12px 20px;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-m);
+  box-shadow: 0 0 0 1px var(--color-border-level-3);
+}
+
+.skip-link:focus {
+  left: 12px;
+  top: 12px;
+}
+
+/* The logo is dark artwork on transparency; it sits on the light page as-is. */
+.nav-brand img {
+  display: block;
+  width: auto;
+  height: 28px;
+}
+
+.footer-brand img {
+  display: block;
+  width: auto;
+  height: 24px;
+  margin-bottom: var(--space-default);
+}
+
+/* Four-across grid for the Private AI configurations. */
+.columns-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media screen and (max-width: 1056px) {
+  .columns-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .columns-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Video panel: a rounded 16:9 frame matching the template's card language. */
+.video-panel {
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  background-color: #000;
+  box-shadow: 0 0 0 1px var(--color-border-level-2);
+  line-height: 0;
+}
+
+.video-panel video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  /* The poster is portrait artwork, so contain it rather than crop it. */
+  object-fit: contain;
+  background-color: #000;
+}
+
+.video-caption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: baseline;
+  margin-top: var(--space-default);
+}
+
+/* "Built on Apache OpenServerless" attribution line. */
+/* The technology foundation reads as a real credit rather than a footnote:
+   the wordmark is given room, with the attribution line under it. */
+.tech-foundation {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 48px;
+}
+
+.tech-foundation-lead {
+  margin: 0;
+  text-align: center;
+}
+
+/* Each credit introduces its own logo, so each block needs air above it. */
+.stack-image + .foundation-row {
+  margin-top: 48px;
+}
+
+.tech-foundation-lead a {
+  color: inherit;
+}
+
+.tech-foundation-lead a:hover {
+  color: var(--color-text-primary);
+}
+
+/* The two logos sit side by side, centred, and stack on narrow screens. */
+.tech-foundation-logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 48px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.tech-foundation-logo {
+  display: block;
+  /* Sized to hold each wordmark at a comparable optical weight rather than a
+     matching pixel width: the marks have different aspect ratios. */
+  width: min(100%, 340px);
+}
+
+.tech-foundation-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.tech-foundation-text {
+  max-width: 760px;
+  margin: 0;
+  text-align: center;
+}
+
+/* Numbered steps for "Build on your PC. Publish anywhere." */
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-accent-b);
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: var(--font-size-m);
+  line-height: 1;
+}
+
+/* Flow and stack diagrams — real text, no images. */
+.diagram {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-l);
+  box-shadow: 0 0 0 1px var(--color-border-level-2);
+  padding: var(--space-card-m);
+}
+
+.flow-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 12px;
+}
+
+.flow-node {
+  flex: 1 1 200px;
+  min-width: 0;
+  background-color: var(--color-background);
+  border-radius: var(--radius-m);
+  box-shadow: 0 0 0 1px var(--color-border-level-3);
+  padding: 16px;
+  text-align: center;
+}
+
+.flow-node.accent {
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  color: var(--color-text-tertiary);
+  flex: 0 0 auto;
+}
+
+/* On narrow screens the arrows point down rather than across. */
+@media screen and (max-width: 767px) {
+  .flow-arrow {
+    justify-content: center;
+    flex-basis: 100%;
+    transform: rotate(90deg);
+  }
+}
+
+.stack-layer {
+  background-color: var(--color-background);
+  border-radius: var(--radius-m);
+  box-shadow: 0 0 0 1px var(--color-border-level-3);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stack-layer + .stack-layer {
+  margin-top: 8px;
+}
+
+.stack-layer img {
+  width: auto;
+  height: 24px;
+  flex: 0 0 auto;
+}
+
+.stack-layer .layer-label {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-s);
+  color: var(--color-accent-2);
+  flex: 0 0 auto;
+  min-width: 88px;
+}
+
+@media screen and (max-width: 479px) {
+  .stack-layer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+/* Pricing: a restrained accent border on the middle card, per the spec. */
+.feature-card.highlighted {
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+
+.price-note {
+  color: var(--color-text-tertiary);
+}
+
+/* Buttons whose destination is not yet confirmed. */
+.button.unavailable {
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.pending-note {
+  display: block;
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* Respect a reduced-motion preference across the page. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* The template caps headings at 672px, sized for its 1008px container.
+   With the wider container the hero headline wrapped too tightly, so give
+   the hero and centered section headings a little more room. */
+.heading.centered {
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Declared after .centered so the hero keeps the wider measure. */
+.heading.hero.centered {
+  max-width: 880px;
+}
+
+/* Keep the two flow rows visually distinct inside one diagram panel. */
+.flow-group + .flow-group {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border-level-2);
+}
+
+/* Inside the tinted diagram panels the surface reduces contrast further,
+   so small print there uses the secondary tone. */
+.diagram p.tertiary {
+  color: var(--color-text-secondary);
+}
+
+/* Footer fine print: keep it readable rather than at the tertiary tone. */
+.footer .tertiary {
+  color: var(--color-text-secondary);
+}
+
+/* ---------- Hero logo ---------- */
+
+/* The logo sits above the headline; the artwork is dark, so it is inverted
+   onto the warm near-black ground like the rest of the Trustant marks. */
+.hero-logo {
+  display: block;
+  width: min(100%, 360px);
+  height: auto;
+  margin: 0 auto 24px;
+  filter: invert(1);
+}
+
+/* ---------- Typewriter motto ---------- */
+
+/* The typewriter sits below the H1 at three quarters of the template's h2
+   scale. Kept as tokens so the size and the height reserved for it cannot
+   drift apart.
+
+   Declared on .motto rather than :root: this file loads after mobile.css, so
+   a :root declaration would resolve the tokens against the desktop scale and
+   defeat that file's own smaller overrides. Scoped here, each viewport picks
+   up the size it is meant to have. */
+.motto {
+  --motto-font-size: calc(var(--font-size-xl) * 0.75);
+  --motto-line-height: calc(var(--line-height-h2) * 0.75);
+}
+
+/* A fixed minimum height so the buttons below never shift as lines type
+   and clear. */
+.motto {
+  margin-top: 24px;
+  /* Held at h2 size, tracking the template's own type scale.
+
+     The min-height reserves the tallest phrase so the buttons below never
+     shift as lines type, wrap and clear: two lines here and on tablet, three
+     on mobile. Each count was measured against the real phrases at the real
+     size rather than estimated. */
+  min-height: calc(2 * var(--motto-line-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  font-size: var(--motto-font-size);
+  line-height: var(--motto-line-height);
+  letter-spacing: var(--letter-spacing-h2);
+  font-weight: var(--header-font-weight);
+}
+
+/* Until the script takes over, the messages are a plain list: with no
+   JavaScript, or with reduced motion, all the copy is readable at once
+   instead of being trapped behind an animation that never runs. */
+.motto-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+/* The composing line: one message at a time, with a blinking caret. */
+.motto-line {
+  display: inline-block;
+  text-align: center;
+}
+
+.motto-caret {
+  display: inline-block;
+  width: 0.08em;
+  height: 1.1em;
+  margin-left: 0.06em;
+  translate: 0 0.16em;
+  background: var(--color-accent);
+  animation: motto-blink 1s steps(1, end) infinite;
+}
+
+@keyframes motto-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Reachable by screen readers without exposing the half-typed line. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 767px) {
+  .motto {
+    min-height: calc(3 * var(--motto-line-height));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motto-caret {
+    animation: none;
+  }
+}
+
+/* ---------- Hero animation ---------- */
+
+.hero-anim {
+  margin: 40px auto 0;
+  /* Most of the content width, going full width on mobile. */
+  width: 80%;
+}
+
+.hero-anim-video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 767px) {
+  .hero-anim {
+    width: 100%;
+  }
+}
+
+/* ---------- Flow node images ---------- */
+
+/* The publish flow now carries a picture per destination. The images have
+   very different aspect ratios, so they are held to a common box height and
+   contained rather than cropped. */
+.flow-image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 96px;
+  object-fit: contain;
+  margin: 0 auto 12px;
+}
+
+/* ---------- Platform stack figure ---------- */
+
+.stack-image {
+  display: block;
+  width: min(100%, 680px);
+  height: auto;
+  margin: 8px auto 0;
+  /* The diagram is drawn for a light ground; on the dark theme it would
+     otherwise sit in a glaring white block. */
+  border-radius: var(--radius-m, 8px);
+  background: #fff;
+  padding: 16px;
+}
+
+/* ---------- First-paint gate ---------- */
+
+/* The page is held unpainted until the assets have settled, so it is never
+   seen half-built. `visibility` rather than `display`: the layout is still
+   computed while hidden, so revealing it is a paint and not a reflow — with
+   `display: none` the reserved image boxes would collapse and the whole page
+   would jolt into place on reveal.
+
+   The `.loading` class is only ever set by the inline script in the head, and
+   that script also sets a 1.5s backstop timer, so the page cannot stay hidden:
+   with scripting off the class is never added at all, and if a script stalls
+   the timer still reveals it. */
+.loading body {
+  visibility: hidden;
+}
+
+/* ---------- Templates ---------- */
+
+/* In-page navigation over one continuous scroll: the links jump to a group
+   and mark whichever group is currently in view. They are plain anchors, so
+   they work with no JavaScript too. */
+.template-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.template-tab {
+  appearance: none;
+  text-decoration: none;
+  padding: 8px 18px;
+  border: 1px solid var(--color-border-level-2);
+  border-radius: var(--radius-s);
+  background: none;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-s);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.template-tab:hover {
+  color: var(--color-text-primary);
+}
+
+.template-tab.is-current {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: #17100c;
+}
+
+.template-tab:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* One horizontal rail holding every template. It scrolls sideways, snaps to
+   each card, and the strip above scrolls it to a group's first card. */
+.template-rail {
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding: 4px 0 20px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding-left: 4px;
+  /* The rail is its own scroll container, so a jump inside it must not drag
+     the page along with it. */
+  overscroll-behavior-x: contain;
+}
+
+.template-card {
+  flex: 0 0 260px;
+  scroll-snap-align: start;
+}
+
+/* A visible, restrained scrollbar: the rail must not look like it ends at the
+   viewport edge. */
+.template-rail::-webkit-scrollbar {
+  height: 8px;
+}
+
+.template-rail::-webkit-scrollbar-track {
+  border-radius: 4px;
+  background: var(--color-surface);
+}
+
+.template-rail::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: var(--color-border-level-3, #4a3a32);
+}
+
+.template-rail::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+.template-card a {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+  border: 1px solid var(--color-border-level-2);
+  border-radius: var(--radius-l);
+  background: var(--color-surface);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.template-card a:hover {
+  border-color: var(--color-accent);
+  background: var(--color-surface-hover);
+}
+
+.template-card a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* The screenshots are tall portraits of whole apps. A fixed 4:3 window shows
+   the top of each one at a consistent size rather than letting a 1670x1734
+   shot tower over the 600x800 ones. */
+.template-shot {
+  display: block;
+  aspect-ratio: 4 / 3;
+  margin-bottom: 14px;
+  border-radius: var(--radius-m, 8px);
+  overflow: hidden;
+  background: #fff;
+}
+
+.template-shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.template-name {
+  display: block;
+  font-size: var(--font-size-m);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.template-note {
+  display: block;
+  margin-top: 6px;
+  font-size: var(--font-size-s);
+  line-height: var(--line-height-body-s, 1.5);
+  color: var(--color-text-secondary);
+}
+
+/* ---------- Open Source mark ---------- */
+
+.opensource-logo {
+  display: block;
+  width: min(100%, 180px);
+  height: auto;
+}
+
+/* ---------- Pricing panels ---------- */
+
+.panel-dialog {
+  width: min(92vw, 480px);
+  padding: 0;
+  border: 1px solid var(--color-border-level-2);
+  border-radius: 16px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  overflow: visible;
+}
+
+/* The download chooser is a framed page, so it needs room to breathe. */
+.panel-dialog.is-wide {
+  width: min(92vw, 860px);
+}
+
+.panel-dialog[open] {
+  margin: auto;
+}
+
+.panel-dialog::backdrop {
+  background: rgb(0 0 0 / 70%);
+}
+
+.panel-dialog-body {
+  padding: 32px;
+}
+
+.panel-dialog-title {
+  margin: 0 0 8px;
+  font-size: var(--font-size-l);
+  line-height: 1.2;
+}
+
+.panel-dialog-frame {
+  display: block;
+  width: 100%;
+  height: min(70vh, 560px);
+  border: 0;
+  border-radius: 15px;
+  background: #fff;
+}
+
+.panel-dialog-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--color-border-level-2);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.panel-dialog-close:hover {
+  background: var(--color-surface-hover);
+}
+
+.panel-dialog-close:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.panel-field {
+  display: block;
+  margin-top: 16px;
+}
+
+.panel-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: var(--font-size-s);
+  color: var(--color-text-secondary);
+}
+
+.panel-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border-level-2);
+  border-radius: 8px;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  /* 16px keeps iOS from zooming the field on focus. */
+  font-size: 16px;
+  resize: vertical;
+}
+
+.panel-input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* On a phone the corner button would sit off-screen, so bring it inside. */
+@media (max-width: 767px) {
+  .panel-dialog-close {
+    top: 8px;
+    right: 8px;
+  }
+
+  .panel-dialog-body {
+    padding: 24px;
+  }
+}
+
+/* ---------- Foundation credit row ---------- */
+
+/* The credit text and the open-source mark share a row, so they read as one
+   statement rather than a caption under a badge. */
+.foundation-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  max-width: 1000px;
+  margin-bottom: 0;
+}
+
+/* The OpenServerless mark is near-square artwork, so it is held to a width
+   that keeps it optically level with the wider Open Source badge. */
+.foundation-mark {
+  flex: 0 0 auto;
+  width: 140px;
+}
+
+.foundation-mark img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.foundation-credit {
+  flex: 1 1 auto;
+  margin: 0;
+  text-align: left;
+}
+
+.foundation-row .opensource-logo {
+  flex: 0 0 auto;
+  margin-bottom: 0;
+}
+
+/* Stacked on a phone, where side by side leaves the text too narrow. */
+@media (max-width: 767px) {
+  .foundation-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .foundation-credit {
+    text-align: center;
+    order: 3;
+  }
+}
+
+/* ---------- Tighter joins around the hero ---------- */
+
+/* Every section carries 60px top and bottom padding, so neighbours stack to
+   120px of empty ground. The hero, pricing and the foundation credits read as
+   one run, so their shared joins are halved. */
+#top {
+  padding-bottom: 24px;
+}
+
+#pricing {
+  padding-top: 24px;
+  padding-bottom: 32px;
+}
+
+/* The credits open the section, so they need no extra lead-in of their own. */
+#foundation .tech-foundation {
+  margin-top: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Site navigation additions (spec/30-refactor.md).
+
+   The landing page's nav was a row of in-page anchors; the site nav is a row of
+   real destinations, two of which carry a mark rather than a word.
+   --------------------------------------------------------------------------- */
+
+/*
+   The bar splits in two: the section links sit with the brand on the left, and
+   the two outbound destinations — GitHub and Nuvolaris — are pushed to the
+   right edge, so "where this site goes" and "where it links out to" read as
+   separate groups rather than as one undifferentiated row.
+
+   The menu itself has no desktop display rule in the template (it is styled
+   only in its collapsed tablet/mobile state), so making it a flex row here is
+   what lets the split happen. The query starts one pixel above where
+   tablet.css turns the menu into a dropdown (max-width: 1199px): below that
+   the items stack, and an auto margin would push GitHub down the panel
+   instead of across it.
+*/
+@media screen and (min-width: 1200px) {
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 4px;
+    /* Clear the wordmark: .nav-link's own 16px of padding is the gap between
+       the links, but against the logo it reads as none at all. */
+    margin-left: 20px;
+  }
+
+  /* The first of the right-hand pair carries the gap that divides the row. */
+  .nav-menu .nav-link-icon {
+    margin-left: auto;
+  }
+}
+
+/* GitHub: the brand glyph sits on the text baseline beside its label. */
+.nav-link-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/*
+   Nuvolaris is the parent brand, so it is shown as its own wordmark, held to
+   about the cap height of the links beside it so it reads as a peer rather
+   than as a second logo competing with the brand.
+
+   Unlike logo-trustant.png this mark is already light artwork — the same file
+   the "Powered by Nuvolaris" block shows unfiltered — so it must NOT be
+   inverted: doing so paints it dark-on-dark and it disappears.
+*/
+.nav-link-logo {
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-link-logo img {
+  display: block;
+  width: auto;
+  height: 16px;
+  opacity: 0.8;
+  transition: opacity 400ms ease;
+}
+
+.nav-link-logo:hover img {
+  opacity: 1;
+}
+
+/*
+   In the collapsed mobile menu every item becomes a full-width row, so the
+   two marked links centre with the words above them.
+*/
+@media screen and (max-width: 1056px) {
+  .nav-link-icon,
+  .nav-link-logo {
+    justify-content: center;
+  }
+}
+
+/*
+   Footer links. The template paints every <a> in the accent, which is right
+   for a link inside a paragraph but turns the footer's two link columns into a
+   block of solid orange. They are navigation, so they read as quiet text and
+   come up to full strength on hover.
+*/
+.footer .link-list a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 400ms ease;
+}
+
+.footer .link-list a:hover {
+  color: var(--color-text-primary);
+}
+
+/*
+   A section arrived at by fragment — a shared /#credits link, or a reload —
+   would otherwise sit underneath the floating nav bar, which is 24px from the
+   top and about 56px tall. The slow-scroll script applies the same offset
+   itself when it animates the travel.
+*/
+section[id] {
+  scroll-margin-top: 104px;
+}
