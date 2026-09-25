@@ -38,6 +38,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tomllib
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
@@ -46,7 +47,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 CONTENT = HERE / "content" / "apps"
 STATIC = HERE / "static"
-# The catalog this site publishes, served at https://trustable.it/index.json.
+# The catalog this site publishes, served at <base_url>/index.json.
 # With --offline it is the input instead of the output.
 INDEX = STATIC / "index.json"
 # Every image the site shows, downloaded so a page reaches only our own origin.
@@ -59,12 +60,21 @@ WORK = HERE / ".templates"
 
 ORG = "trustable-ai"
 
-# The site's canonical domain, matching base_url in config.toml and static/CNAME
-# — see spec/5-domain.md. The published catalog carries absolute URLs so a
+# The site's canonical domain. The published catalog carries absolute URLs so a
 # consumer reading it from anywhere can resolve an icon without knowing where
 # the file came from; the generated pages keep the site-absolute path, which
 # resolves under a local preview too.
-SITE = "https://trustable.it"
+#
+# Read from config.toml rather than repeated here: this and base_url have to
+# name the same origin, and when they were two hardcoded copies a domain change
+# updated one and left the catalog publishing icon URLs on the old host.
+def _site_from_config():
+    with open(HERE / "config.toml", "rb") as handle:
+        base = tomllib.load(handle).get("base_url", "")
+    return base.rstrip("/")
+
+
+SITE = _site_from_config()
 
 # The marker a repository's GitHub description begins with to be part of the
 # catalog. Not to be confused with MARKER below, which stamps generated files.
@@ -554,6 +564,29 @@ def keep_image(url, used):
     return url
 
 
+# An icon this site published: the generator-owned /images/<file> tail, taken
+# from the end of the URL whatever precedes it. The origin is whatever base_url
+# was when that catalog was written, so it is deliberately not pinned to the
+# current one — and matching the tail rather than a single leading origin also
+# recovers a catalog left with stacked origins by an earlier buggy run.
+OURS_IMAGE = re.compile(r"(/images/[^/]+)$")
+
+
+def ours_image(url):
+    """The site-absolute path of an icon we published, or None if not ours.
+
+    The path alone is not proof — a foreign URL can end in /images/<file> too —
+    so the file has to be one we actually hold. That is what separates our own
+    catalog read back from a README hotlinking someone else's screenshot.
+    """
+    if not url:
+        return None
+    match = OURS_IMAGE.search(url)
+    if not match:
+        return None
+    return match.group(1) if (IMAGES / match.group(1)[len("/images/"):]).is_file() else None
+
+
 def clean_images(used):
     """Delete images no application referenced this run.
 
@@ -740,9 +773,15 @@ def write_group(group, apps, weight, checkouts, used, offline):
         # Reading our own catalog back (--offline) the icon is already one of
         # ours, so it is only stripped back to the path the page wants — the
         # image it names is in static/images/ from the run that wrote it.
+        #
+        # Recognised by its /images/ path rather than by the origin in front of
+        # it: a catalog written before a domain change still names our files,
+        # and matching on SITE alone would take it for a foreign URL and paste
+        # the new origin in front of the old one.
         icon = app.get("icon")
-        if icon and icon.startswith(SITE + "/images/"):
-            icon = keep_image(icon[len(SITE):], used)
+        ours = ours_image(icon)
+        if ours:
+            icon = keep_image(ours, used)
         elif icon:
             source_repo, path = split_raw(icon)
             icon = (local_image(source_repo, path, checkouts, used, offline)

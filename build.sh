@@ -172,12 +172,6 @@ mv docs/index.html docs/index1.html
 cp index.html docs/index.html
 echo ">> published the real home page at /index1.html, placeholder at /index.html"
 
-# The domain the built site is served from. Written here rather than kept in
-# static/CNAME because zola copies that file into docs/ verbatim on every
-# build, and static/ still carries the old trustable.it for the existing site.
-echo "trustant.ai" >docs/CNAME
-echo ">> docs/CNAME set to trustant.ai"
-
 # Commit what the build owns. Confined to these paths so an unrelated edit
 # sitting in the working tree is never swept into the build's commit, and
 # skipped entirely when they come back unchanged. Only `push` goes on to
