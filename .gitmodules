@@ -22,3 +22,6 @@
 	path = support
 	url = https://github.com/trustable-ai/.github
 	branch = main
+[submodule "landing"]
+	path = landing
+	url = https://github.com/trustant/website

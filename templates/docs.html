@@ -19,18 +19,18 @@
 
       .sidebar {
         position: sticky;
-        /* Clear the sticky site bar above it. */
-        top: 5rem;
+        /* Clear the floating nav pill, which sits 24px from the top. */
+        top: 6.5rem;
       }
 
       .sidebar h2 {
         margin: 0 0 0.9rem;
-        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-family: var(--font-mono);
         font-size: 0.72rem;
         font-weight: 500;
         letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: var(--muted);
+        color: var(--color-text-secondary);
       }
 
       .sidebar ul {
@@ -46,20 +46,25 @@
       .sidebar a {
         display: block;
         padding: 0.45rem 0.85rem;
-        border-radius: var(--radius);
+        border-radius: var(--radius-s);
         text-decoration: none;
-        color: var(--navy);
+        color: var(--color-text-primary);
         font-weight: 500;
-        transition: background var(--fade) ease;
+        transition: background 400ms ease;
       }
 
       .sidebar a:hover {
-        background: color-mix(in srgb, var(--brand) 8%, transparent);
+        background: color-mix(in srgb, var(--color-accent) 8%, transparent);
       }
 
+      /*
+       * On the dark ground a full-strength text-colour block would be the
+       * brightest thing on the page, so the current page is marked with the
+       * accent instead — the same move the gallery tabs make.
+       */
       .sidebar a[aria-current="page"] {
-        background: var(--ink);
-        color: var(--paper);
+        background: var(--color-accent);
+        color: var(--color-on-accent);
       }
 
       /* ---------- prose ---------- */
@@ -104,7 +109,7 @@
       .prose h2 {
         margin: 3rem 0 1rem;
         padding-top: 1.75rem;
-        border-top: 1px solid var(--hairline);
+        border-top: 1px solid var(--color-border-level-2);
         font-size: 1.65rem;
         font-weight: 600;
         letter-spacing: -0.015em;
@@ -119,21 +124,21 @@
 
       .prose p,
       .prose li {
-        color: color-mix(in srgb, var(--ink) 88%, var(--paper));
+        color: color-mix(in srgb, var(--color-text-primary) 88%, var(--color-background));
       }
 
       .prose a {
-        color: var(--brand);
+        color: var(--color-accent);
         text-decoration: none;
-        border-bottom: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
+        border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
       }
 
       .prose a:hover {
-        border-bottom-color: var(--brand);
+        border-bottom-color: var(--color-accent);
       }
 
       .prose strong {
-        color: var(--navy);
+        color: var(--color-text-primary);
         font-weight: 600;
       }
 
@@ -146,13 +151,13 @@
         margin-top: 0.4rem;
       }
 
-      /* Screenshots read as objects on the light page, like the stack diagram
-         card on the landing page. */
+      /* Screenshots read as objects on the page, like the stack diagram card
+         on the home page. */
       .prose img {
         margin: 1.75rem 0;
-        background: var(--card);
-        border: 1px solid var(--rule);
-        border-radius: var(--radius);
+        background: var(--color-surface);
+        border: 1px solid var(--color-border-level-2);
+        border-radius: var(--radius-s);
         padding: 0.5rem;
       }
 
@@ -172,21 +177,21 @@
       .prose hr {
         margin: 3rem 0;
         border: 0;
-        border-top: 1px solid var(--hairline);
+        border-top: 1px solid var(--color-border-level-2);
       }
 
       .prose blockquote {
         margin: 1.75rem 0;
         padding: 0.25rem 0 0.25rem 1.25rem;
-        border-left: 3px solid var(--brand);
-        color: var(--muted);
+        border-left: 3px solid var(--color-accent);
+        color: var(--color-text-secondary);
       }
 
       .prose code {
-        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-family: var(--font-mono);
         font-size: 0.88em;
-        background: color-mix(in srgb, var(--ink) 6%, transparent);
-        border-radius: var(--radius);
+        background: color-mix(in srgb, var(--color-text-primary) 6%, transparent);
+        border-radius: var(--radius-s);
         padding: 0.12em 0.38em;
       }
 
@@ -194,8 +199,8 @@
         margin: 1.75rem 0;
         padding: 1rem 1.15rem;
         overflow-x: auto;
-        border: 1px solid var(--rule);
-        border-radius: var(--radius);
+        border: 1px solid var(--color-border-level-2);
+        border-radius: var(--radius-s);
         font-size: 0.9rem;
       }
 
@@ -227,14 +232,14 @@
 
       .prose th,
       .prose td {
-        border: 1px solid var(--hairline);
+        border: 1px solid var(--color-border-level-2);
         padding: 0.6rem 0.85rem;
         text-align: left;
         vertical-align: top;
       }
 
       .prose th {
-        background: var(--card);
+        background: var(--color-surface);
         font-weight: 600;
       }
 
@@ -248,9 +253,9 @@
 
         .sidebar {
           position: static;
-          background: var(--card);
-          border: 1px solid var(--rule);
-          border-radius: var(--radius);
+          background: var(--color-surface);
+          border: 1px solid var(--color-border-level-2);
+          border-radius: var(--radius-s);
           padding: 1.1rem 1rem;
         }
       }

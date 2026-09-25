@@ -1,434 +1,96 @@
 <!doctype html>
-<html lang="en">
+
+<html lang="en" class="theme-light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Apps — Trustable</title>
+    <title>Templates — Trustant</title>
     <meta
       name="description"
-      content="Apps you can run on your own infrastructure."
+      content="Ready-to-use applications you can run and customise on your own infrastructure."
     />
-    <link rel="icon" href="/trustable-logo.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link rel="icon" href="/favicon/icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
+
+    
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="preload"
+      href="/fonts/InterVariable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
+
+    <link href="/vendor/font-awesome-6.7.2/css/all.min.css" rel="stylesheet" />
+    <link href="/css/index.css" rel="stylesheet" type="text/css" />
+    <link href="/css/pricing.css" rel="stylesheet" type="text/css" />
+    <link href="/css/tablet.css" rel="stylesheet" type="text/css" />
+    <link href="/css/mobile.css" rel="stylesheet" type="text/css" />
+    <link href="/css/trustant.css" rel="stylesheet" type="text/css" />
+    <script src="/js/main.js" type="text/javascript" defer></script>
+
+    <!--
+      Hold the first paint until the page is assembled, so nothing is shown
+      half-built: no fallback-font flash, and no glimpse of the motto as a bare
+      list before the typewriter takes it over.
+
+      This is inline and in the head on purpose. It has to run before the body
+      is parsed, which the deferred main.js cannot do. The class is also *added
+      from script* rather than written into the markup or the stylesheet: if it
+      lived there, a blocked or failed script would leave the page permanently
+      invisible. Applied here, the worst case is that the gate never goes up and
+      the page renders exactly as it would have anyway.
+    -->
+    <script>
+      (function () {
+        var root = document.documentElement;
+        root.classList.add("loading");
+
+        // Never leave the page hidden because something stalled.
+        var timer = setTimeout(reveal, 1500);
+
+        function reveal() {
+          clearTimeout(timer);
+          root.classList.remove("loading");
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          var fonts = document.fonts ? document.fonts.ready : null;
+          if (fonts && fonts.then) fonts.then(reveal, reveal);
+          else reveal();
+        });
+      })();
+    </script>
+
     <style>
       /*
-       * ---------- palette ----------
+       * ---------- shared additions ----------
        *
-       * The Nuvolaris brand tokens, taken from the corporate site's design
-       * system (trusite/src/styles.css), whose own comment sets the rule:
-       * ink + paper, one restrained accent. See spec/22-align.md.
+       * The palette, type scale, buttons, cards, nav and footer all come from
+       * css/index.css and css/trustant.css. Only what those do not provide
+       * belongs here: the Apps/Templates gallery, which is rendered on three
+       * surfaces (the home page panel, the Templates index and each group
+       * index), and the small shared helpers the documentation pages use.
        *
-       * The point of "one accent" is that --brand is the only colour on the
-       * page that isn't ink, paper or a grey between them, so it always means
-       * something when it appears. --signal is reserved and deliberately
-       * unused: the corporate site holds it back too.
+       * Everything below is written against the LaunchKit tokens rather than
+       * the old ink/paper variables, so the one palette drives the whole site.
        */
-      :root {
-        --ink: #231f20;
-        --paper: #fafaf7;
-        --mute: #58595b;
-        --rule: #e9e9ea;
-        --brand: #1da1ce;
-        --brand-soft: #a0d8ea;
-        --signal: #ff7113;
 
-        /*
-         * The old names kept as aliases. Every rule in this file and in
-         * landing.html, docs.html, section.html and starter-cards.html was
-         * written against them, so aliasing is what lets the new palette come
-         * through everywhere at once instead of in a hundred edits. New rules
-         * should use the brand names above.
-         */
-        --navy: var(--ink);
-        --blue: var(--brand);
-        --cyan: var(--brand-soft);
-        --logo-blue: var(--brand);
-        --bg: var(--paper);
-        --card: #ffffff;
-        --hairline: var(--rule);
-        --muted: var(--mute);
-
-        /* Near-square, not pills: the corporate site sets 0.25rem. */
-        --radius: 2px;
-        --fade: 400ms;
-
-        /*
-         * The ground the site used before spec 22. The landing page's video
-         * and machine strip were flattened against it — trustable-machines.png
-         * carries no alpha at all — so on the warm paper they would each sit
-         * in a visibly cooler rectangle. Anything still matted to the old
-         * colour is given it back explicitly, which hides the seam until the
-         * artwork itself is re-exported. Remove this and the rules using it
-         * once those files carry transparency.
-         */
-        --legacy-plate: #f5f7fb;
-      }
-
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        margin: 0;
-        background: var(--bg);
-        color: var(--navy);
-        font-family: "Work Sans", system-ui, -apple-system, sans-serif;
-        font-size: 17px;
-        line-height: 1.6;
-        overflow-x: hidden;
-      }
-
-      img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-      }
-
+      /*
+       * `.wrap` is the old layout container, kept because docs.html and the
+       * gallery measure against it. It matches .page-container's width so the
+       * documentation column lines up with the header and footer above it.
+       */
       .wrap {
-        width: min(1200px, 100% - 3rem);
+        width: min(1160px, 100% - 3rem);
         margin-inline: auto;
-      }
-
-      /* ---------- site header ---------- */
-
-      /*
-       * Translucent paper rather than the flat ground, so content dissolving
-       * under a sticky bar still reads as being behind it. The bottom rule is
-       * mixed from ink rather than being --rule: over scrolling content the
-       * bar is semi-transparent, and a flat hairline would show the page
-       * through it.
-       */
-      .sitebar {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        background: rgba(250, 250, 247, 0.85);
-        backdrop-filter: blur(12px);
-        border-bottom: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
-        padding: 0.85rem 0;
-      }
-
-      .sitebar-inner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-
-      .brand {
-        display: inline-flex;
-        align-items: center;
-        text-decoration: none;
-      }
-
-      /* The wordmark is the whole brand now, so it carries the header. */
-      .brand img {
-        height: 2.4rem;
-        width: auto;
-      }
-
-      .sitenav {
-        display: flex;
-        align-items: center;
-        gap: 0.35rem;
-        flex-wrap: wrap;
-      }
-
-      /*
-       * Quiet sans links that darken on hover, not mono pills: the accent is
-       * spent on the one block at the end of the row rather than smeared
-       * across every item.
-       */
-      .sitenav a {
-        font-size: 0.8125rem;
-        font-weight: 500;
-        text-decoration: none;
-        color: var(--mute);
-        padding: 0.5rem 0.75rem;
-        transition: color var(--fade) ease;
-      }
-
-      .sitenav a:hover {
-        color: var(--ink);
-      }
-
-      .sitenav a:focus-visible {
-        outline: 2px solid var(--brand);
-        outline-offset: 2px;
-      }
-
-      /*
-       * The current page is marked by weight and ink rather than by a filled
-       * pill — with the links this quiet, going full-strength is already the
-       * loudest state in the row.
-       */
-      .sitenav a[aria-current="page"] {
-        color: var(--ink);
-        font-weight: 600;
-      }
-
-      /*
-       * The one call to action in the header, as a solid ink block. Hovering
-       * to brand rather than to a darker ink is the corporate site's move: the
-       * accent arrives only on intent.
-       */
-      .sitenav a.sitenav-cta {
-        background: var(--ink);
-        color: var(--paper);
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        padding: 0.75rem 1.25rem;
-        border-radius: var(--radius);
-        transition: background var(--fade) ease;
-      }
-
-      .sitenav a.sitenav-cta:hover {
-        background: var(--brand);
-        color: var(--paper);
-      }
-
-      /*
-       * On a phone the brand and four nav items cannot share a line. Left to
-       * space-between they wrap unevenly and the wide tracked CTA block is the
-       * one pushed past the right edge, which scrolls the whole page sideways.
-       * Stacking the bar and centring the row keeps everything inside the
-       * viewport at any width.
-       */
-      @media (max-width: 640px) {
-        .sitebar-inner {
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-
-        .sitenav {
-          justify-content: center;
-          gap: 0.15rem;
-        }
-
-        .sitenav a {
-          padding: 0.4rem 0.5rem;
-        }
-
-        .sitenav a.sitenav-cta {
-          padding: 0.6rem 1rem;
-          letter-spacing: 0.12em;
-        }
-      }
-
-      /*
-       * ---------- footer ----------
-       *
-       * Paper, not a solid navy slab. The page ends on a hairline and keeps
-       * the same ground throughout, which is what makes the whole site read
-       * as one sheet rather than as a document sitting on a coloured base.
-       */
-      .footer {
-        border-top: 1px solid var(--rule);
-        padding: 4rem 0 2rem;
-        margin-top: 4rem;
-        color: var(--mute);
-      }
-
-      /*
-       * Brand block first, then the link columns. auto for the brand and
-       * even columns after it, so adding a column doesn't squeeze the
-       * positioning line underneath the wordmark.
-       */
-      .footer-inner {
-        display: grid;
-        grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
-        gap: 2.5rem;
-        font-size: 0.9rem;
-      }
-
-      .footer p {
-        margin: 0;
-      }
-
-      /* On paper the wordmark is already black — nothing to invert. */
-      .footer img {
-        width: 150px;
-      }
-
-      /*
-       * The copyright pairs the parent wordmark with the line. The mark is set
-       * small and dropped to ink so it reads at the weight of the text beside
-       * it rather than as a second logo competing with the Trustable mark
-       * above — the corporate blue at this size would be the loudest thing in
-       * the footer.
-       */
-      .footer-copyright {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-
-      .footer-copyright img {
-        width: 92px;
-        filter: brightness(0);
-        opacity: 0.55;
-        transition: opacity var(--fade) ease;
-      }
-
-      .footer-copyright a:hover img {
-        opacity: 0.8;
-      }
-
-      /*
-       * The positioning line under the mark, held narrow: it is a caption to
-       * the brand, not a paragraph competing with the link columns.
-       */
-      .footer-tagline {
-        margin-top: 1rem;
-        max-width: 26ch;
-        font-size: 0.8125rem;
-        line-height: 1.6;
-        color: var(--mute);
-      }
-
-      /* Mono, uppercase, muted — the same label voice as .eyebrow. */
-      .footer-heading {
-        font-family: "JetBrains Mono", ui-monospace, monospace;
-        font-size: 0.6875rem;
-        font-weight: 500;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--mute);
-      }
-
-      .footer a {
-        color: color-mix(in srgb, var(--ink) 80%, transparent);
-        text-decoration: none;
-        transition: color var(--fade) ease;
-      }
-
-      .footer a:hover {
-        color: var(--ink);
-      }
-
-      .footer-nav {
-        display: flex;
-        flex-direction: column;
-        gap: 0.625rem;
-        margin-top: 1rem;
-        font-size: 0.84375rem;
-      }
-
-      /*
-       * The bottom bar: copyright against the outbound links, divided from
-       * the columns by the same hairline that opened the footer.
-       */
-      .footer-bottom {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 1rem;
-        margin-top: 4rem;
-        padding-top: 2rem;
-        border-top: 1px solid var(--rule);
-        font-size: 0.75rem;
-      }
-
-      .footer-bottom-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.25rem;
-      }
-
-      .footer-logo-link {
-        display: inline-block;
-        transition: opacity var(--fade) ease;
-      }
-
-      /*
-       * Scoped away from .footer-copyright: that mark fades on its own <img>,
-       * and fading the link as well would multiply the two opacities and make
-       * the logo darker on hover than at rest.
-       */
-      .footer-inner .footer-logo-link:hover {
-        opacity: 0.75;
-      }
-
-      /* The columns stack before they get too narrow to hold a link. */
-      @media (max-width: 720px) {
-        .footer-inner {
-          grid-template-columns: 1fr;
-          gap: 2rem;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
-
-        :root {
-          --fade: 0ms;
-        }
-      }
-
-      /* ---------- shared type ---------- */
-
-      /*
-       * The section label that sits above a heading and names the kind of
-       * thing that follows — "Platform", "Integrated services". Mono and
-       * muted, so it reads as a tab on the section rather than as a smaller
-       * heading. Defined here because landing.html, docs.html and
-       * starter-cards.html all set them.
-       */
-      .eyebrow {
-        display: block;
-        font-family: "JetBrains Mono", ui-monospace, monospace;
-        font-size: 0.6875rem;
-        font-weight: 500;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--mute);
-      }
-
-      /*
-       * A 64px hairline lattice at 6% ink, for the one or two surfaces that
-       * want texture behind them. Applied to a positioned ::before or to an
-       * absolutely-placed child rather than to the element itself, so the
-       * grid never lands on top of the content.
-       */
-      .grid-paper {
-        background-image:
-          linear-gradient(
-            to right,
-            color-mix(in srgb, var(--ink) 6%, transparent) 1px,
-            transparent 1px
-          ),
-          linear-gradient(
-            to bottom,
-            color-mix(in srgb, var(--ink) 6%, transparent) 1px,
-            transparent 1px
-          );
-        background-size: 64px 64px;
       }
 
       /* ---------- Apps gallery ---------- */
 
       /*
-       * Lives here rather than in landing.html because three surfaces render
-       * starter-cards.html: the home page panel, the Apps index and each
-       * group index. See spec/4-generate.md.
-       *
        * One block per group stacked down the panel. The 5% side inset is on
        * the gallery rather than on each row, so the tiles of every group line
        * up on the same two edges at every width.
@@ -440,16 +102,9 @@
       }
 
       /*
-       * On the landing page the gallery breaks out of its .wrap parent: the
-       * wrap caps at 1200px and adds its own 1.5rem margin, which would stack
-       * on top of the 5% and leave the real inset drifting between 3% and 8%
-       * across breakpoints. Measuring against the viewport is what makes it a
-       * flat 5%.
-       *
-       * Scoped to the panel: inside the docs prose column (the Apps and
-       * group indexes) a 100vw child is wider than its own container, which
-       * scrolls the page sideways and collapses the grid to one tile per row.
-       * There the 5% is of the prose column, which is what it should be.
+       * Inside the docs prose column the inset is of that column, which is
+       * what it should be; on the home page the panel variant below widens it
+       * to the viewport.
        */
       .panel .gallery {
         width: 100vw;
@@ -457,72 +112,14 @@
         padding-inline: 5vw;
       }
 
-      /* ---------- tabbed variant (home page only) ---------- */
-
-      /*
-       * The tab strip replaces the per-group headings. Without JS every group
-       * is still rendered stacked below it, so the strip is inert rather than
-       * misleading — .js-tabs is only added once the script has actually taken
-       * the panels over.
-       */
-      /*
-       * A tab bar, not a button row: the CTA row directly above it is made of
-       * pills, so these share a baseline and mark the selection with an
-       * underline instead. Left-aligned for the same reason — a tab bar
-       * anchors to the edge of the content it labels.
-       */
-      .gallery-tabs {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.25rem 1.4rem;
-        margin-bottom: 1.25rem;
-        border-bottom: 1px solid var(--hairline);
-      }
-
-      .gallery-tab {
-        appearance: none;
-        background: none;
-        border: 0;
-        /* Sits over the strip's own baseline, so the selected rule replaces
-           the hairline rather than stacking a second line under it. */
-        border-bottom: 2px solid transparent;
-        margin-bottom: -1px;
-        color: var(--muted);
-        font-family: "JetBrains Mono", ui-monospace, monospace;
-        font-size: 0.74rem;
-        font-weight: 500;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        padding: 0.55rem 0.15rem;
-        cursor: pointer;
-        transition:
-          color var(--fade) ease,
-          border-color var(--fade) ease;
-      }
-
-      .gallery-tab:hover {
-        color: var(--navy);
-        border-bottom-color: var(--hairline);
-      }
-
-      .gallery-tab:focus-visible {
-        outline: 2px solid var(--blue);
-        outline-offset: 2px;
-      }
-
-      .js-tabs .gallery-tab[aria-selected="true"] {
-        color: var(--navy);
-        border-bottom-color: var(--blue);
-      }
-
       .gallery-title {
         margin: 0 0 0.9rem;
-        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-family: var(--font-mono);
         font-size: 0.72rem;
         font-weight: 500;
         letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: var(--muted);
+        color: var(--color-text-secondary);
       }
 
       /* Raised over `.prose a` for the same reason as .gallery-card a below. */
@@ -535,7 +132,7 @@
 
       .gallery-title a:hover,
       .prose .gallery-title a:hover {
-        color: var(--ink);
+        color: var(--color-text-primary);
       }
 
       /*
@@ -555,9 +152,9 @@
       /*
        * `.prose a` is defined in docs.html, which loads after this file, and
        * matches these tiles too — the gallery renders inside the prose column
-       * on the Apps indexes. At equal specificity the later rule would win and
-       * paint every tile name in the accent with a prose underline, so this is
-       * raised a step to keep the tiles ink.
+       * on the Templates indexes. At equal specificity the later rule would win
+       * and paint every tile name in the accent with a prose underline, so this
+       * is raised a step to keep the tiles plain text.
        */
       .gallery-card a,
       .prose .gallery-card a {
@@ -565,13 +162,13 @@
         gap: 0.5rem;
         text-decoration: none;
         border-bottom: 0;
-        color: var(--ink);
+        color: var(--color-text-primary);
       }
 
       .gallery-card a:focus-visible {
-        outline: 2px solid var(--brand);
+        outline: 2px solid var(--color-accent);
         outline-offset: 4px;
-        border-radius: var(--radius);
+        border-radius: var(--radius-s);
       }
 
       /* The title sits above the box, so it is page text rather than card
@@ -590,40 +187,39 @@
         display: block;
         overflow: hidden;
         padding: 0.9rem;
-        background: var(--card);
-        border: 1px solid var(--rule);
-        border-radius: var(--radius);
+        background: var(--color-surface);
+        border: 1px solid var(--color-border-level-2);
+        border-radius: var(--radius-m);
         transition:
-          border-color var(--fade) ease,
-          transform var(--fade) ease;
+          border-color 400ms ease,
+          transform 400ms ease;
       }
 
       .gallery-card a:hover .gallery-box {
-        border-color: var(--brand);
+        border-color: var(--color-accent);
         transform: translateY(-2px);
       }
 
       /*
        * The preview slot is 3:4 portrait, so its height follows the column
        * width and every tile in a row matches whatever its icon's own aspect
-       * is. The source screenshots are all portrait (0.55:1 to 0.97:1), so
-       * they seat here with little waste. `contain` letterboxes rather than
-       * cropping — a shot is never cut off to fill the slot.
+       * is. `contain` letterboxes rather than cropping — a shot is never cut
+       * off to fill the slot.
        */
       .gallery-icon {
         width: 100%;
         aspect-ratio: 3 / 4;
         height: auto;
         object-fit: contain;
-        border-radius: var(--radius);
+        border-radius: var(--radius-s);
       }
 
       /* Fallback tile for an application whose templates repo ships no icon. */
       .gallery-initial {
         display: grid;
         place-items: center;
-        background: color-mix(in srgb, var(--brand) 8%, transparent);
-        color: var(--brand);
+        background: var(--color-accent-b);
+        color: var(--color-accent);
         font-size: 2.5rem;
         font-weight: 300;
       }
@@ -637,15 +233,15 @@
         position: absolute;
         inset: auto 0 0;
         padding: 0.7rem 0.9rem;
-        background: color-mix(in srgb, var(--ink) 92%, transparent);
-        color: var(--paper);
+        background: color-mix(in srgb, var(--color-background) 92%, transparent);
+        color: var(--color-text-primary);
         font-size: 0.9rem;
         line-height: 1.35;
         opacity: 0;
         translate: 0 100%;
         transition:
-          opacity var(--fade) ease,
-          translate var(--fade) ease;
+          opacity 400ms ease,
+          translate 400ms ease;
       }
 
       .gallery-card a:hover .gallery-note,
@@ -654,18 +250,6 @@
         translate: 0 0;
       }
 
-      /*
-       * Tablet two up, desktop three up. Equal `1fr` columns with the gutter
-       * as a real column-gap: every tile is then exactly the same width, which
-       * is what keeps the 3:4 preview slots on one line. An earlier version
-       * sized the columns in percent and took the gutter out of each tile's
-       * padding — that left the last column in each row a gutter wider than
-       * its siblings, and a 3:4 slot turns any width difference into a
-       * visible height difference.
-       *
-       * The band widens as the columns divide, so the tiles still clear their
-       * specified share: see spec/4-generate.md for the measured widths.
-       */
       @media (min-width: 600px) {
         .gallery-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -677,6 +261,66 @@
         .gallery-grid {
           grid-template-columns: repeat(3, minmax(0, 1fr));
         }
+      }
+
+      /*
+       * The gallery tab strip, used by the home page panel. Without JS every
+       * group is still rendered stacked below it, so the strip is inert rather
+       * than misleading — .js-tabs is only added once the script has actually
+       * taken the panels over.
+       */
+      .gallery-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem 1.4rem;
+        margin-bottom: 1.25rem;
+        border-bottom: 1px solid var(--color-border-level-2);
+      }
+
+      .gallery-tab {
+        appearance: none;
+        background: none;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        color: var(--color-text-secondary);
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 0.55rem 0.15rem;
+        cursor: pointer;
+        transition:
+          color 400ms ease,
+          border-color 400ms ease;
+      }
+
+      .gallery-tab:hover {
+        color: var(--color-text-primary);
+        border-bottom-color: var(--color-border-level-3);
+      }
+
+      .gallery-tab:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+      }
+
+      .js-tabs .gallery-tab[aria-selected="true"] {
+        color: var(--color-text-primary);
+        border-bottom-color: var(--color-accent);
+      }
+
+      /*
+       * The tabs script hides the unselected panels with the `hidden`
+       * attribute, whose default `display: none` is overridden by any explicit
+       * display — and `.gallery` is a grid, so its children are grid items and
+       * the hidden panels went on reserving a row each. That left the selected
+       * group stranded above several empty rows. Restoring `display: none`
+       * takes them out of the grid entirely.
+       */
+      .gallery-group[hidden] {
+        display: none;
       }
 
       
@@ -692,18 +336,18 @@
 
       .sidebar {
         position: sticky;
-        /* Clear the sticky site bar above it. */
-        top: 5rem;
+        /* Clear the floating nav pill, which sits 24px from the top. */
+        top: 6.5rem;
       }
 
       .sidebar h2 {
         margin: 0 0 0.9rem;
-        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-family: var(--font-mono);
         font-size: 0.72rem;
         font-weight: 500;
         letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: var(--muted);
+        color: var(--color-text-secondary);
       }
 
       .sidebar ul {
@@ -719,20 +363,25 @@
       .sidebar a {
         display: block;
         padding: 0.45rem 0.85rem;
-        border-radius: var(--radius);
+        border-radius: var(--radius-s);
         text-decoration: none;
-        color: var(--navy);
+        color: var(--color-text-primary);
         font-weight: 500;
-        transition: background var(--fade) ease;
+        transition: background 400ms ease;
       }
 
       .sidebar a:hover {
-        background: color-mix(in srgb, var(--brand) 8%, transparent);
+        background: color-mix(in srgb, var(--color-accent) 8%, transparent);
       }
 
+      /*
+       * On the dark ground a full-strength text-colour block would be the
+       * brightest thing on the page, so the current page is marked with the
+       * accent instead — the same move the gallery tabs make.
+       */
       .sidebar a[aria-current="page"] {
-        background: var(--ink);
-        color: var(--paper);
+        background: var(--color-accent);
+        color: var(--color-on-accent);
       }
 
       /* ---------- prose ---------- */
@@ -777,7 +426,7 @@
       .prose h2 {
         margin: 3rem 0 1rem;
         padding-top: 1.75rem;
-        border-top: 1px solid var(--hairline);
+        border-top: 1px solid var(--color-border-level-2);
         font-size: 1.65rem;
         font-weight: 600;
         letter-spacing: -0.015em;
@@ -792,21 +441,21 @@
 
       .prose p,
       .prose li {
-        color: color-mix(in srgb, var(--ink) 88%, var(--paper));
+        color: color-mix(in srgb, var(--color-text-primary) 88%, var(--color-background));
       }
 
       .prose a {
-        color: var(--brand);
+        color: var(--color-accent);
         text-decoration: none;
-        border-bottom: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
+        border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
       }
 
       .prose a:hover {
-        border-bottom-color: var(--brand);
+        border-bottom-color: var(--color-accent);
       }
 
       .prose strong {
-        color: var(--navy);
+        color: var(--color-text-primary);
         font-weight: 600;
       }
 
@@ -819,13 +468,13 @@
         margin-top: 0.4rem;
       }
 
-      /* Screenshots read as objects on the light page, like the stack diagram
-         card on the landing page. */
+      /* Screenshots read as objects on the page, like the stack diagram card
+         on the home page. */
       .prose img {
         margin: 1.75rem 0;
-        background: var(--card);
-        border: 1px solid var(--rule);
-        border-radius: var(--radius);
+        background: var(--color-surface);
+        border: 1px solid var(--color-border-level-2);
+        border-radius: var(--radius-s);
         padding: 0.5rem;
       }
 
@@ -845,21 +494,21 @@
       .prose hr {
         margin: 3rem 0;
         border: 0;
-        border-top: 1px solid var(--hairline);
+        border-top: 1px solid var(--color-border-level-2);
       }
 
       .prose blockquote {
         margin: 1.75rem 0;
         padding: 0.25rem 0 0.25rem 1.25rem;
-        border-left: 3px solid var(--brand);
-        color: var(--muted);
+        border-left: 3px solid var(--color-accent);
+        color: var(--color-text-secondary);
       }
 
       .prose code {
-        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-family: var(--font-mono);
         font-size: 0.88em;
-        background: color-mix(in srgb, var(--ink) 6%, transparent);
-        border-radius: var(--radius);
+        background: color-mix(in srgb, var(--color-text-primary) 6%, transparent);
+        border-radius: var(--radius-s);
         padding: 0.12em 0.38em;
       }
 
@@ -867,8 +516,8 @@
         margin: 1.75rem 0;
         padding: 1rem 1.15rem;
         overflow-x: auto;
-        border: 1px solid var(--rule);
-        border-radius: var(--radius);
+        border: 1px solid var(--color-border-level-2);
+        border-radius: var(--radius-s);
         font-size: 0.9rem;
       }
 
@@ -900,14 +549,14 @@
 
       .prose th,
       .prose td {
-        border: 1px solid var(--hairline);
+        border: 1px solid var(--color-border-level-2);
         padding: 0.6rem 0.85rem;
         text-align: left;
         vertical-align: top;
       }
 
       .prose th {
-        background: var(--card);
+        background: var(--color-surface);
         font-weight: 600;
       }
 
@@ -921,9 +570,9 @@
 
         .sidebar {
           position: static;
-          background: var(--card);
-          border: 1px solid var(--rule);
-          border-radius: var(--radius);
+          background: var(--color-surface);
+          border: 1px solid var(--color-border-level-2);
+          border-radius: var(--radius-s);
           padding: 1.1rem 1rem;
         }
       }
@@ -931,27 +580,58 @@
     </style>
   </head>
   <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <div class="background-gradient"></div>
+    <div class="page-container">
+
     
-    <header class="sitebar">
-      <div class="wrap sitebar-inner">
+    
+    <header class="nav-container">
+      <a href="/" class="nav-brand">
+        <img src="/img/logo-trustant.png" width="106" height="28" alt="Trustant" />
+      </a>
+      
+      <nav id="site-nav" class="nav-menu" data-navigation aria-label="Site">
         
-        <a class="brand" href="/">
-          <img src="/logo-trustable.png" alt="Trustable" />
+        
+        <a href="https://trustable.it/documentation/" class="nav-link">Documentation</a>
+        
+        
+        <a href="https://trustable.it/architecture/" class="nav-link">Architecture</a>
+        
+        
+        <a href="https://trustable.it/apps/" class="nav-link">Templates</a>
+        
+        
+        <a href="/#credits" class="nav-link" data-slow-scroll>OpenSource</a>
+        <a
+          href="https://github.com/trustant/trustant"
+          class="nav-link nav-link-icon"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="fa-brands fa-github icon s" aria-hidden="true"></span> GitHub
         </a>
-        <nav class="sitenav" aria-label="Site">
-          
-          
-          <a href="https://trustable.it/documentation/">Documentation</a>
-          
-          
-          <a href="https://trustable.it/apps/">Apps</a>
-          
-          
-          <a href="https://trustable.it/architecture/">Architecture</a>
-          
-          
-          <a class="sitenav-cta" href="https://nuvolaris.io">Nuvolaris</a>
-        </nav>
+        
+        <a
+          href="https://nuvolaris.io"
+          class="nav-link nav-link-logo"
+          target="_blank"
+          rel="noopener"
+        >
+          <img src="/img/logo-nuvolaris.svg" alt="Nuvolaris" />
+        </a>
+      </nav>
+      <div class="button-group">
+        <button
+          class="button ghost compact nav-hamburger"
+          data-mobile-toggle
+          aria-label="Show menu"
+          aria-expanded="false"
+          aria-controls="site-nav"
+        >
+          <span class="fa-solid fa-bars icon m" aria-hidden="true"></span>
+        </button>
       </div>
     </header>
     
@@ -963,8 +643,8 @@
         
       
       <aside class="sidebar">
-        <h2>Apps</h2>
-        <nav aria-label="Apps">
+        <h2>Templates</h2>
+        <nav aria-label="Templates">
           <ul>
             <li>
               <a
@@ -1020,8 +700,8 @@
         
         
         
-        <h1>Apps</h1>
-        <p>Apps you can run on your own infrastructure.</p>
+        <h1>Templates</h1>
+        <p>Ready-to-use applications you can run and customise on your own infrastructure.</p>
 
         
         
@@ -1035,7 +715,7 @@
 
 
 <div class="gallery">
-  <section class="gallery-group" aria-label="Apps">
+  <section class="gallery-group" aria-label="Templates">
     <ul class="gallery-grid">
       
       
@@ -1158,64 +838,96 @@
 
     
     <footer class="footer">
-      <div class="wrap">
-        <div class="footer-inner">
+      <div class="footer-menu">
+        <div class="footer-brand">
+          <img
+            src="/img/logo-trustant.png"
+            width="91"
+            height="24"
+            loading="lazy"
+            alt="Trustant"
+          />
+          <p class="paragraph s secondary">
+            A coding assistant for Private AI, built on Apache OpenServerless.
+          </p>
+        </div>
+        <div>
           
-          <div>
-            <a class="footer-logo-link" href="/">
-              <img src="/logo-trustable.png" alt="Trustable" loading="lazy" />
-            </a>
-            <p class="footer-tagline">
-              The serverless platform for Private AI. Develop once, deploy
-              anywhere.
-            </p>
-          </div>
-
-          
-          <div>
-            <div class="footer-heading">Documentation</div>
-            <nav class="footer-nav" aria-label="Documentation">
-              
-              
-              <a href="https://trustable.it/documentation/">Documentation</a>
-              
-              
-              <a href="https://trustable.it/apps/">Apps</a>
-              
-              
-              <a href="https://trustable.it/architecture/">Architecture</a>
-              
-            </nav>
-          </div>
-
-          <div>
-            <div class="footer-heading">Get started</div>
+          <div class="link-list">
+            <a href="/" class="paragraph s">Trustant</a>
             
-            <nav class="footer-nav" aria-label="Get started">
-              <a href="https://n7s.co/nuvolaria-suite" target="_blank" rel="noopener">Demo</a>
-              <a href="https://nuvolaris.io/#/contact" target="_blank" rel="noopener">Contact Us</a>
-              <a href="https://nuvolaris.io" target="_blank" rel="noopener">Nuvolaris</a>
-            </nav>
+            
+            <a href="https://trustable.it/documentation/" class="paragraph s">Documentation</a>
+            
+            
+            <a href="https://trustable.it/architecture/" class="paragraph s">Architecture</a>
+            
+            
+            <a href="https://trustable.it/apps/" class="paragraph s">Templates</a>
+            
+            <a
+              href="https://github.com/trustant/trustant"
+              class="paragraph s"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            >
+            <a
+              href="https://nuvolaris.io"
+              class="paragraph s"
+              target="_blank"
+              rel="noopener"
+              >Nuvolaris</a
+            >
           </div>
         </div>
-
-        <div class="footer-bottom">
-          
-          <p class="footer-copyright">
-            <a class="footer-logo-link" href="https://nuvolaris.io" target="_blank" rel="noopener">
-              <img src="/logo-nuvolaris.svg" alt="Nuvolaris" loading="lazy" />
-            </a>
-            <span>&copy; 2026 Nuvolaris. All rights reserved.</span>
-          </p>
-          <div class="footer-bottom-links">
-            <a href="https://nuvolaris.io/privacy" target="_blank" rel="noopener">Privacy</a>
-            <a href="https://x.com/msciab" target="_blank" rel="noopener">X</a>
-            <a href="https://www.linkedin.com/showcase/trustable-ai/" target="_blank" rel="noopener">LinkedIn</a>
-            <a href="https://www.youtube.com/@nuvolarisio" target="_blank" rel="noopener">YouTube</a>
+        <div>
+          <div class="link-list">
+            <a
+              href="https://linkedin.com/showcase/trustant"
+              class="paragraph s"
+              target="_blank"
+              rel="noopener"
+              >LinkedIn</a
+            >
+            <a
+              href="https://www.youtube.com/@nuvolarisio"
+              class="paragraph s"
+              target="_blank"
+              rel="noopener"
+              >YouTube</a
+            >
+            <a
+              href="https://x.com/msciab"
+              class="paragraph s"
+              target="_blank"
+              rel="noopener"
+              >X</a
+            >
+            <a
+              href="https://nuvolaris.io/privacy"
+              class="paragraph s"
+              target="_blank"
+              rel="noopener"
+              >Privacy</a
+            >
           </div>
         </div>
       </div>
+      <div>
+        <p class="paragraph s tertiary">
+          &copy; 2026 <a href="https://nuvolaris.io" target="_blank" rel="noopener">Nuvolaris</a>.
+          All rights reserved.<br />
+          Apache OpenServerless is a trademark of the Apache Software Foundation; its logo is
+          shown as a technology attribution.<br />
+          Page built with
+          <a href="https://launchkit.evilmartians.io" target="_blank" rel="noopener">LaunchKit</a>
+          by <a href="https://evilmartians.com" target="_blank" rel="noopener">Evil Martians</a>.
+        </p>
+      </div>
     </footer>
     
+
+    </div>
   </body>
 </html>

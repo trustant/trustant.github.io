@@ -1,6 +1,6 @@
 base_url = "https://trustable.it"
-title = "Trustable"
-description = "Build Apps with Local AI on your PC. Build, run and publish AI applications that never leave your own infrastructure."
+title = "Trustant"
+description = "Build full-stack applications with Private AI on your PC, workstation, private server, or sovereign infrastructure. Powered by Apache OpenServerless."
 
 compile_sass = false
 build_search_index = false

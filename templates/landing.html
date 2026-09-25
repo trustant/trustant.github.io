@@ -1,1092 +1,706 @@
 {% extends "base.html" %}
 
-{% block title %}Trustable — Build Apps with Local AI on your PC{% endblock title %}
+{#
+  The Trustant home page, converted from the landing site (landing/index1.html,
+  the trustant/website submodule) into this site's templating — see
+  spec/30-refactor.md.
 
-{% block description %}Trustable lets you build apps with local AI on your PC: build with AI, start from templates, deploy anywhere and scale from Local AI to Sovereign AI — all on your own infrastructure.{% endblock description %}
+  The structure and copy are the landing page's. Two things differ on purpose:
+
+  - the Templates section renders the generated gallery (starter-cards.html)
+    instead of a hardcoded rail, so the catalogue stays driven by
+    static/index.json rather than frozen into the markup;
+  - the header and footer come from base.html, so the home page and the
+    documentation share one set of chrome.
+#}
+
+{% block title %}Trustant — A Trustable Code Assistant for Private AI{% endblock title %}
+
+{% block description %}Build full-stack applications with Private AI on your PC, workstation, private server, or sovereign infrastructure. Powered by Apache OpenServerless.{% endblock description %}
 
 {% block style %}
-
-      {#
-        The palette, the box-sizing reset, the body and img defaults and .wrap
-        all live in base.html and this template inherits them — it renders
-        inside base's {% block style %}, after those rules. They used to be
-        repeated here, which meant the home page carried a second :root that
-        overrode the shared one and quietly pinned this page to the old
-        colours. Only rules specific to the landing page belong below.
-      #}
-
-      /* ---------- header ---------- */
-
-      .masthead {
-        padding: 1.75rem 0 1.25rem;
-        text-align: center;
-      }
-
-      h1 {
-        margin: 0;
-        font-size: clamp(1.6rem, 1.1rem + 2vw, 2.6rem);
-        font-weight: 700;
-        letter-spacing: -0.02em;
-        line-height: 1.2;
-      }
+      /*
+       * The landing page's own styling lives in css/index.css and
+       * css/trustant.css, both loaded by base.html. Only what the converted
+       * page needs on top of them belongs here.
+       */
 
       /*
-       * "IT is Trustable" — the words are set as written, as a lockup with the
-       * wordmark rather than as page copy beside it.
-       *
-       * This is the one place on the site that stays bold. Everywhere else the
-       * display type went Light 300 to match the corporate site (spec 22), but
-       * here the text has to sit against the TRUSTABLE wordmark — a wide, bold
-       * geometric grotesque — and light letters next to it would read as a
-       * caption rather than as part of the mark. Work Sans 700 is the closest
-       * of the two faces the site now loads; Montserrat, which was closer
-       * still, went with the alignment.
+       * The generated gallery replaces the landing page's template rail, so it
+       * takes that section's spacing: the rail sat flush in the section, and
+       * the gallery's own 5% inset is measured against the page container
+       * rather than the viewport here — inside .page-container a 100vw child
+       * would overflow the rounded panel and scroll the page sideways.
        */
-      .hero-title {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        font-size: clamp(1.8rem, 1.1rem + 3vw, 3.4rem);
-        font-weight: 700;
-        letter-spacing: 0.04em;
+      #templates .gallery {
+        padding-inline: 0;
       }
 
-      /* Scales with the words so the lockup holds together at every width. */
-      .hero-logo {
-        width: auto;
-        height: clamp(2.6rem, 1.4rem + 5vw, 5rem);
-        margin: 0;
-      }
-
-      /*
-       * "is" is the small connective part of "IT is Trustable", set reversed
-       * inside a solid dot: white letters on a black disc, so the connective
-       * reads as a mark between the two words rather than as a third word.
-       *
-       * The dot is a circle by construction — a fixed em-based diameter with
-       * the text centred in it — and sits on the wordmark's own optical centre
-       * rather than on the baseline of a word half again its height, because
-       * the logo file carries vertical padding.
-       */
-      .hero-small {
-        align-self: center;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        box-sizing: border-box;
-        width: 1.15em;
-        height: 1.15em;
-        padding-bottom: 0.04em;
-        border-radius: 50%;
-        background: var(--ink);
-        color: var(--paper);
-        font-size: 0.66em;
-        line-height: 1;
-        translate: 0 0.08em;
-        letter-spacing: 0;
-      }
-
-      /*
-       * The motto composes through its messages rather than stating one. The
-       * height is reserved for the longest of them at the current width, so
-       * the step nav below never shifts as lines type and clear; without that
-       * the whole page jumps on every message change.
-       */
-      .motto {
-        margin: 1rem 0 0;
-        font-size: clamp(1rem, 0.85rem + 0.7vw, 1.35rem);
-        font-weight: 500;
-        color: var(--muted);
-        min-height: 2.8em;
-        display: flex;
-        align-items: center;
+      #templates .gallery-tabs {
         justify-content: center;
       }
 
       /*
-       * Until the script takes over, the messages are a plain list: with
-       * no JavaScript, or with reduced motion, the copy is all readable at
-       * once instead of being trapped behind an animation that never runs.
+       * With one panel visible at a time the gallery's inter-group gap has
+       * nothing to separate, so it only pushes the tiles away from the strip
+       * that labels them.
        */
-      .motto-list {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem 1.1rem;
-        justify-content: center;
-      }
-
-      /* The composing line: one message at a time, with a blinking caret. */
-      .motto-line {
-        display: inline-block;
-        text-align: center;
-      }
-
-      .motto-caret {
-        display: inline-block;
-        width: 0.08em;
-        height: 1.1em;
-        margin-left: 0.06em;
-        translate: 0 0.16em;
-        background: var(--logo-blue);
-        animation: motto-blink 1s steps(1, end) infinite;
-      }
-
-      @keyframes motto-blink {
-        50% {
-          opacity: 0;
-        }
-      }
-
-      /* Reachable by screen readers without exposing the half-typed line. */
-      .visually-hidden {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        margin: -1px;
-        padding: 0;
-        overflow: hidden;
-        clip-path: inset(50%);
-        white-space: nowrap;
-        border: 0;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .motto-caret {
-          animation: none;
-        }
-      }
-
-      /*
-       * Matches the Nuvolaris wordmark (#1DA1CE), darkened along the same hue
-       * to clear 3:1 on the page background — the exact logo value is 2.78:1.
-       */
-      h1 .accent {
-        color: var(--logo-blue);
-      }
-
-      /* ---------- sticky step nav ---------- */
-
-      .stepnav {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        background: rgba(250, 250, 247, 0.85);
-        backdrop-filter: blur(12px);
-        border-bottom: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
-        padding: 0.85rem 0;
-      }
-
-      .steps {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 0.35rem;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-
-      .step {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .step-link {
-        appearance: none;
-        border: 1px solid transparent;
-        background: transparent;
-        color: var(--navy);
-        font-family: "JetBrains Mono", ui-monospace, monospace;
-        font-size: 0.78rem;
-        font-weight: 500;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        text-decoration: none;
-        padding: 0.5rem 1.1rem;
-        border-radius: var(--radius);
-        cursor: pointer;
-        transition:
-          background var(--fade) ease,
-          color var(--fade) ease;
-      }
-
-      .step-link:hover {
-        background: color-mix(in srgb, var(--brand) 8%, transparent);
-      }
-
-      .step-link:focus-visible {
-        outline: 2px solid var(--brand);
-        outline-offset: 2px;
-      }
-
-      .step-link[aria-current="step"] {
-        background: var(--ink);
-        color: var(--paper);
-      }
-
-      .step-arrow {
-        color: var(--brand);
-        font-size: 1rem;
-        line-height: 1;
-      }
-
-      /* ---------- section slot / cross-fade ---------- */
-
-      /* Base (no-JS) state: every section stacked and visible. */
-      .slot {
-        position: relative;
-      }
-
-      .panel {
-        padding: 2.5rem 0 3rem;
-      }
-
-      /* JS takes over: one panel at a time, stacked in the same slot. */
-      .js .slot {
-        display: grid;
-      }
-
-      .js .panel {
-        grid-area: 1 / 1;
-        opacity: 0;
-        visibility: hidden;
-        transition:
-          opacity var(--fade) ease,
-          visibility 0s linear var(--fade);
-      }
-
-      .js .panel.is-active {
-        opacity: 1;
-        visibility: visible;
-        transition:
-          opacity var(--fade) ease,
-          visibility 0s;
-      }
-
-      /*
-       * Light and large, set tight. At this size weight is not what carries a
-       * heading — scale is — and Light against the body text is a wider
-       * contrast than Bold was. See spec/22-align.md.
-       */
-      h2 {
-        margin: 0;
-        font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3.1rem);
-        font-weight: 300;
-        letter-spacing: -0.02em;
-        line-height: 1.05;
-      }
-
-      .lede {
-        margin: 0.6rem auto 2rem;
-        max-width: 46ch;
-        font-size: clamp(1.05rem, 0.98rem + 0.4vw, 1.3rem);
-        color: var(--muted);
-        text-align: center;
-      }
-
-      /* Product mark inside the Start section: it stands in for the <h2>, so
-         the .lede under it supplies the gap an <h2> would have. */
-      .product-logo {
-        width: 250px;
-        margin: 0 auto;
-      }
-
-      .panel-head {
-        text-align: center;
-      }
-
-      /* ---------- call to action ---------- */
-
-      .cta-row {
-        margin-top: 1.75rem;
-        text-align: center;
-      }
-
-      /*
-       * Every panel opens with the same row: one filled button for the step's
-       * own destination, then Register for a Demo and Contact us outlined in
-       * the same block shape. One clear first option rather than three equal
-       * buttons competing at the top of the panel. It wraps, because the row
-       * is wider than a phone.
-       */
-      .cta-row-hero {
-        margin: 0 0 2rem;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        justify-content: center;
-      }
-
-      /*
-       * An ink block that turns brand on hover — the accent arrives on intent
-       * rather than sitting lit the whole time. Sans rather than mono: at 600
-       * with this much tracking the mono face reads as code, and this is the
-       * one control the eye should land on first.
-       */
-      .cta {
-        display: inline-block;
-        background: var(--ink);
-        color: var(--paper);
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        text-decoration: none;
-        padding: 0.85rem 1.6rem;
-        border-radius: var(--radius);
-        transition:
-          background var(--fade) ease,
-          color var(--fade) ease;
-      }
-
-      .cta:hover {
-        background: var(--brand);
-        color: var(--paper);
-      }
-
-      .cta:focus-visible {
-        outline: 2px solid var(--brand);
-        outline-offset: 2px;
-      }
-
-      /*
-       * Same specificity as .cta, so it has to sit after it in source order —
-       * otherwise .cta's fill wins and every button in the row looks primary.
-       */
-      .cta-quiet {
-        background: transparent;
-        color: var(--ink);
-        box-shadow: inset 0 0 0 1px var(--rule);
-      }
-
-      .cta-quiet:hover {
-        background: var(--ink);
-        color: var(--paper);
-      }
-
-      /* ---------- Start: three columns with vertical rules ---------- */
-
-      .trio {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+      #templates .gallery.is-tabbed {
         gap: 0;
-      }
-
-      .trio > * + * {
-        border-left: 1px solid var(--hairline);
-      }
-
-      .trio-item {
-        padding: 0 1.75rem;
-        text-align: center;
-      }
-
-      .trio-item h3 {
-        margin: 0 0 1.5rem;
-        font-size: 1.28rem;
-        font-weight: 700;
-        line-height: 1.25;
-        white-space: nowrap;
-      }
-
-      /* The email shot is drawn larger than its siblings; match them. */
-      .trio-figure {
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-      }
-
-      .trio-figure img {
-        max-height: 300px;
-        width: auto;
-      }
-
-      /*
-       * Needs the same specificity as `.trio-figure img` above, or that rule's
-       * 300px cap wins and this one silently does nothing.
-       */
-      .trio-figure img.email-shot {
-        max-height: 186px;
-      }
-
-
-      /* ---------- Deploy: appliance beside the stack, text below ---------- */
-
-      /*
-       * Both columns sized to their render's real width rather than a flat
-       * 50%: a narrow product shot centered in half the band leaves a wide
-       * dead gap between the two.
-       */
-      .duo {
-        display: grid;
-        grid-template-columns: auto auto;
-        gap: 2.5rem;
-        align-items: center;
-        justify-content: center;
-      }
-
-      /* Keep tall product renders inside the fixed slot height. */
-      .duo-figure {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .duo-figure img {
-        max-height: 340px;
-        width: auto;
-      }
-
-      /* Card keeps the diagram reading as one distinct object. */
-      .stack-diagram {
-        background: var(--card);
-        border: 1px solid var(--rule);
-        border-radius: var(--radius);
-        padding: 0.85rem;
-        max-height: 340px;
-        width: auto;
-      }
-
-      .duo-text {
-        margin: 2rem auto 0;
-        max-width: 68ch;
-        text-align: center;
-        color: var(--muted);
-      }
-
-      /* ---------- Build: centered animation ---------- */
-
-      .anim {
-        /* Pull up against the lede's 2.75rem gap: the video reads as one
-           unit with the heading, leaving room for the caption below. */
-        margin: -0.75rem 0 0;
-        text-align: center;
-      }
-
-      .anim-video {
-        /*
-         * Sized on width alone, held 10% under the full band: the file is
-         * 1200x520, so 1080px is the largest size that never upscales, and it
-         * only shrinks when the panel itself is narrower. Deliberately not
-         * capped against the viewport height: a short window would then
-         * collapse the video to a thumbnail, which is worse than letting the
-         * panel scroll.
-         */
-        width: min(1080px, 90%);
-        height: auto;
-        /* Reserve the box while the file loads so the slot never shifts. */
-        aspect-ratio: 1200 / 520;
-        margin-inline: auto;
-        border-radius: var(--radius);
-        /* Matted to the pre-spec-22 ground — see --legacy-plate. */
-        background: var(--legacy-plate);
-      }
-
-      /*
-       * The machine band sits between the animation and the CTA. Like the
-       * video it is sized on width alone and never upscaled — the file is
-       * 1799x274, but it is held to the video's 1080px so the two stack as one
-       * column rather than the strip running visibly wider than the frame
-       * above it.
-       */
-      .machines {
-        width: min(1080px, 90%);
-        height: auto;
-        aspect-ratio: 1799 / 274;
-        margin: 2rem auto 0;
-        /*
-         * This file has no alpha at all, so its own flat ground is part of the
-         * image. Giving the element the same colour turns what would read as a
-         * mismatched block into a plate that ends where the artwork does.
-         */
-        background: var(--legacy-plate);
-        border-radius: var(--radius);
-      }
-
-      .anim-caption {
-        margin: 1.5rem auto 0;
-        max-width: 68ch;
-        font-size: 1.02rem;
-        line-height: 1.55;
-        color: var(--muted);
-      }
-
-      /*
-       * The machine band is a figure like the animation above it, so its
-       * caption reuses .anim-caption. Its own margin already sets the gap to
-       * the video, so the figure adds none of its own.
-       */
-      .machines-figure {
-        margin: 0;
-      }
-
-      /* ---------- Scale: three columns joined by arrows ---------- */
-
-      .flow {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr auto 1fr;
-        align-items: start;
-        gap: 1.5rem;
-      }
-
-      /* Sit the arrows level with the product shots, not the text below. */
-      .flow-arrow {
-        margin-top: 75px;
-      }
-
-      .flow-item {
-        text-align: center;
-      }
-
-      .flow-figure {
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        min-height: 170px;
-      }
-
-      .flow-figure img {
-        max-height: 170px;
-        width: auto;
-      }
-
-      .flow-scope {
-        margin: 1.25rem 0 0.35rem;
-        font-family: "JetBrains Mono", ui-monospace, monospace;
-        font-size: 0.7rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--muted);
-      }
-
-      .flow-caption {
-        margin: 0;
-        font-weight: 700;
-        font-size: 1.05rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--blue);
-      }
-
-      .flow-note {
-        margin: 0.6rem auto 0;
-        max-width: 30ch;
-        font-size: 0.95rem;
-        line-height: 1.5;
-        color: var(--muted);
-      }
-
-      .flow-footnote {
-        margin: 2.5rem auto 0;
-        max-width: 62ch;
-        text-align: center;
-        font-size: 0.98rem;
-        color: var(--muted);
-      }
-
-      .flow-footnote::before {
-        content: "";
-        display: block;
-        width: 48px;
-        height: 2px;
-        background: var(--cyan);
-        margin: 0 auto 1.25rem;
-      }
-
-      .flow-arrow {
-        width: 56px;
-        height: 26px;
-        background: var(--blue);
-        clip-path: polygon(
-          0 32%,
-          60% 32%,
-          60% 0,
-          100% 50%,
-          60% 100%,
-          60% 68%,
-          0 68%
-        );
-      }
-
-      /* footer styles come from base.html */
-
-      /* ---------- responsive ---------- */
-
-      @media (max-width: 900px) {
-        .trio,
-        .duo {
-          grid-template-columns: 1fr;
-          gap: 3rem;
-        }
-
-        .trio > * + * {
-          border-left: 0;
-          border-top: 1px solid var(--hairline);
-          padding-top: 3rem;
-        }
-
-        .trio-item {
-          padding-inline: 0;
-        }
-
-        /* Full-width columns: let long titles wrap rather than overflow. */
-        .trio-item h3 {
-          white-space: normal;
-        }
-
-        .flow {
-          grid-template-columns: 1fr;
-          gap: 1.5rem;
-          justify-items: center;
-        }
-
-        /* arrows point down when the flow stacks */
-        .flow-arrow {
-          transform: rotate(90deg);
-          margin-top: 0;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
-
-        :root {
-          --fade: 0ms;
-        }
-
-        .js .panel,
-        .js .panel.is-active {
-          transition: none;
-        }
       }
 {% endblock style %}
 
-{#
-  The landing page owns its whole chrome: the masthead lockup and the cycling
-  step nav replace the documentation site bar.
-#}
-{% block header %}
+{% block content %}
+    <main id="main">
 
-    <header class="masthead">
-      <div class="wrap">
-        <h1 class="hero-title">
-          <span class="hero-word">IT</span>
-          <span class="hero-word hero-small">is</span>
+      <!-- 1. Hero and introduction video -->
+      <section id="top">
+        <div class="heading hero centered">
           <img
             class="hero-logo"
-            src="/logo-trustable.png"
-            alt="Trustable"
-            width="420"
+            src="/img/logo-trustant.png"
+            width="360"
+            height="94"
+            alt="Trustant"
           />
-        </h1>
-        {#
-          The messages ship as a list so they are all present without
-          JavaScript. The script replaces the list with a single line that
-          composes each message in turn, and leaves the list alone under
-          reduced motion.
-        #}
-        <div class="motto" id="motto">
-          <ul class="motto-list" id="motto-list">
-            <li>Build Apps with Local AI on your PC</li>
-            <li>Keep your code and data under your control</li>
-            <li>Deploy in your Server, Data Center or Sovereign Cloud</li>
-            <li>Yoda says: Trustable, (is) it</li>
-          </ul>
-        </div>
-      </div>
-    </header>
-{% endblock header %}
-
-{% block content %}
-<nav class="stepnav" aria-label="Platform steps">
-      <div class="wrap">
-        <ul class="steps">
-          <li class="step">
-            <a class="step-link" href="#build" data-step="build">Build with Local AI</a>
-          </li>
-          <li class="step" aria-hidden="true"><span class="step-arrow">→</span></li>
-          <li class="step">
-            <a class="step-link" href="#start" data-step="start"
-              >Customize Apps</a
-            >
-          </li>
-          <li class="step" aria-hidden="true"><span class="step-arrow">→</span></li>
-          <li class="step">
-            <a class="step-link" href="#deploy" data-step="deploy"
-              >Deploy Anywhere</a
-            >
-          </li>
-          <li class="step" aria-hidden="true"><span class="step-arrow">→</span></li>
-          <li class="step">
-            <a class="step-link" href="#scale" data-step="scale"
-              >Scale Everywhere</a
-            >
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-    <main class="slot" id="slot">
-      <!-- ---------------- Build ---------------- -->
-      <section class="panel" id="build" data-panel="build">
-        <div class="wrap">
-          <div class="panel-head">
-            <h2>Build Apps with Local AI on your PC</h2>
-            <p class="lede">
-              Customize and build full stack applications with prompts, using
-              Local, Private or Sovereign AI.
-            </p>
+          <h1 class="balanced">A Trustable Code Assistant for Private AI</h1>
+          <!--
+            The messages ship as a plain list so they are all readable without
+            JavaScript, or under reduced motion. The script replaces the list
+            with a single line that composes each message in turn.
+          -->
+          <div class="motto" id="motto">
+            <ul class="motto-list" id="motto-list">
+              <li>Build full-stack applications on your PC with AI you control</li>
+              <li>
+                Run your AI locally, on a workstation, a private server or your own data center
+              </li>
+              <li>Then publish your application wherever you need it</li>
+            </ul>
           </div>
-
-          <p class="cta-row cta-row-hero">
-            <a class="cta" href="{{ get_url(path='@/documentation/_index.md') | safe }}"
-              >Documentation</a
-            >
-            <a class="cta cta-quiet" href="https://n7s.co/nuvolaria-suite" target="_blank" rel="noopener">Register for a Demo</a>
-            <a class="cta cta-quiet" href="https://nuvolaris.io/#/contact" target="_blank" rel="noopener">Contact us</a>
-          </p>
-
-          <figure class="anim">
+          <figure class="hero-anim">
             <video
-              class="anim-video"
-              src="/trustable-anim.mp4"
-              width="1200"
-              height="520"
-              autoplay
-              loop
-              muted
+              class="hero-anim-video"
+              width="1672"
+              height="941"
+              controls
               playsinline
-              preload="auto"
-              aria-label="Trustable building an application from a written description."
-            ></video>
-            <figcaption class="anim-caption">
-              Describe what you want and Trustable writes it — frontend, backend
-              actions and data wiring. It is Nuvolaris technology inside the
-              platform, not a third-party tool: what it builds runs on your own
-              stack, on your own hardware.
-            </figcaption>
-          </figure>
-
-          <figure class="machines-figure">
-            <img
-              class="machines"
-              src="/trustable-machines.png"
-              alt="The range of machines Trustable runs on, from a laptop to a sovereign cloud."
-              width="1799"
-              height="274"
-              loading="lazy"
-            />
-            <figcaption class="anim-caption">
-              Use your Local AI workstation. No code or data leaves your
-              infrastructure.
-            </figcaption>
+              preload="none"
+              poster="/img/splash.png"
+              src="https://videos.nuvolaris.download/simple-intro.mp4"
+            >
+              <p class="paragraph s">
+                Your browser does not support embedded video.
+                <a href="https://videos.nuvolaris.download/simple-intro.mp4"
+                  >Open the video directly</a
+                >.
+              </p>
+            </video>
           </figure>
         </div>
       </section>
 
-      <!-- ---------------- Start ---------------- -->
-      <section class="panel" id="start" data-panel="start">
-        <div class="wrap">
-          {#
-            No <h2> here: the step nav above already names the step and the
-            product mark stands in for the heading, so the lede hangs off the
-            logo instead.
-          #}
-          <div class="panel-head">
+      <!-- 2. Pricing -->
+      <section id="pricing">
+        <div class="heading centered">
+          <h2 class="no-top-margin">Start Personal. Grow to a Private Cluster.</h2>
+        </div>
+        <div class="grid columns-3 gap-l">
+
+          <div class="feature-card justified-vertically">
+            <div>
+              <div class="feature-heading">
+                <p class="paragraph l bold no-top-margin">Trustant Personal</p>
+                <div class="price-line">
+                  <div class="paragraph l bold">Free</div>
+                </div>
+              </div>
+              <div class="feature-list">
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>Easy to use installer for Windows and Mac</div>
+                </div>
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>Full Trustant with all the features</div>
+                </div>
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>Local install of Apache OpenServerless</div>
+                </div>
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>For personal use only (no publishing)</div>
+                </div>
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>Community Support</div>
+                </div>
+              </div>
+            </div>
+            <div class="margin-top-l">
+              <button
+                type="button"
+                class="button tertiary full-width"
+                data-open-dialog="download-dialog"
+              >
+                Download
+              </button>
+            </div>
+          </div>
+
+          <div class="feature-card justified-vertically highlighted">
+            <div>
+              <div class="feature-heading">
+                <p class="paragraph l bold no-top-margin">Trustant Developer</p>
+                <div class="price-line">
+                  <div class="paragraph l bold">$100</div>
+                  <div class="paragraph s secondary">/month</div>
+                </div>
+              </div>
+              <div class="feature-list">
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>Easy to use installer for Windows and Mac</div>
+                </div>
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>Installer for one server to publish applications</div>
+                </div>
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>License for publishing on one named server</div>
+                </div>
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>For development only: single server with no backup or HA</div>
+                </div>
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>Email support</div>
+                </div>
+              </div>
+            </div>
+            <div class="margin-top-l">
+              <button type="button" class="button primary full-width" data-open-dialog="buy-dialog">
+                Buy
+              </button>
+            </div>
+          </div>
+
+          <div class="feature-card justified-vertically">
+            <div>
+              <div class="feature-heading">
+                <p class="paragraph l bold no-top-margin">Trustant Enterprise</p>
+                <div class="price-line">
+                  <div class="paragraph l bold">$1,000</div>
+                  <div class="paragraph s secondary">/month</div>
+                </div>
+              </div>
+              <div class="feature-list">
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>Easy to use installer for Windows and Mac</div>
+                </div>
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>Installation to one cluster of choice, minimum 3 servers / 6 VM</div>
+                </div>
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>Publishing to one named cluster and 2 development servers</div>
+                </div>
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>HA support: the cluster keeps working with one server / 2 VM down</div>
+                </div>
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>Monitoring and Backup</div>
+                </div>
+                <div class="feature-item paragraph s">
+                  <div class="fa-regular fa-square-check icon m" aria-hidden="true"></div>
+                  <div>Email + Chat support</div>
+                </div>
+              </div>
+            </div>
+            <div class="margin-top-l">
+              <button
+                type="button"
+                class="button tertiary full-width"
+                data-open-dialog="contact-dialog"
+              >
+                Contact Sales
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 3. Build on your PC. Publish anywhere. -->
+      <section id="how-it-works">
+        <div class="heading centered">
+          <h2 class="no-top-margin">Build on your PC. Publish anywhere.</h2>
+          <p class="paragraph m secondary balanced">
+            Move from an idea to a running application with a coding assistant and an integrated
+            application environment.
+          </p>
+        </div>
+        <div class="grid columns-3 gap-l">
+          <div class="feature-card">
+            <div class="step-number" aria-hidden="true">1</div>
+            <div class="feature-heading">
+              <h3 class="no-top-margin">Choose your Private AI</h3>
+              <p class="paragraph s secondary">
+                Connect Trustant to AI running on your PC, an AI workstation, a private server, or
+                your sovereign infrastructure.
+              </p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="step-number" aria-hidden="true">2</div>
+            <div class="feature-heading">
+              <h3 class="no-top-margin">Build and run your application</h3>
+              <p class="paragraph s secondary">
+                Describe what you need. Use Trustant to create and refine your frontend, backend,
+                and data connections, then run and test the application on your PC.
+              </p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="step-number" aria-hidden="true">3</div>
+            <div class="feature-heading">
+              <h3 class="no-top-margin">Publish where you need it</h3>
+              <p class="paragraph s secondary">
+                Deploy your application to a compatible environment on your own server, a private
+                cluster, or infrastructure in a data center you control.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flow graphic: where the application is published. -->
+        <div class="diagram margin-top-l">
+          <div class="flow-group">
+            <div class="flow-row">
+              <div class="flow-node accent">
+                <img
+                  class="flow-image"
+                  src="/img/mac+spark.png"
+                  width="644"
+                  height="279"
+                  loading="lazy"
+                  alt="A laptop running Trustant beside an AI workstation."
+                />
+                <p class="paragraph m bold no-top-margin">PC with Trustant</p>
+                <p class="paragraph s tertiary">Build and test here</p>
+              </div>
+              <div class="flow-arrow" aria-hidden="true">
+                <span class="fa-solid fa-arrow-right icon m"></span>
+              </div>
+              <div class="flow-node">
+                <img
+                  class="flow-image"
+                  src="/img/local-ai.png"
+                  width="782"
+                  height="974"
+                  loading="lazy"
+                  alt="A compact AI appliance for a single desk."
+                />
+                <p class="paragraph m bold no-top-margin">AI appliance</p>
+              </div>
+              <div class="flow-node">
+                <img
+                  class="flow-image"
+                  src="/img/private-ai.png"
+                  width="502"
+                  height="334"
+                  loading="lazy"
+                  alt="A rack-mounted GPU server."
+                />
+                <p class="paragraph m bold no-top-margin">Private Server</p>
+              </div>
+              <div class="flow-node">
+                <img
+                  class="flow-image"
+                  src="/img/sovereign-ai.png"
+                  width="378"
+                  height="450"
+                  loading="lazy"
+                  alt="A data center building."
+                />
+                <p class="paragraph m bold no-top-margin">Sovereign Data Center</p>
+              </div>
+            </div>
+            <p class="paragraph s tertiary text-centered">Publish: where your application runs</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Powered by Nuvolaris -->
+      <section id="foundation">
+        <div class="tech-foundation">
+          <p class="paragraph m secondary tech-foundation-lead">
+            <a href="https://nuvolaris.io" target="_blank" rel="noopener">Powered by Nuvolaris</a>
+          </p>
+          <a
+            href="https://nuvolaris.io"
+            target="_blank"
+            rel="noopener"
+            class="tech-foundation-logo"
+            aria-hidden="true"
+            tabindex="-1"
+          >
+            <img src="/img/logo-nuvolaris.svg" width="2000" height="312" alt="" />
+          </a>
+
+          <p class="paragraph m secondary tech-foundation-text">
+            Frontend, APIs, database and storage, hosting, compute, functions, security, rate
+            limiting, caching, load balancing, logging and recovery — Kubernetes, S3-compatible
+            storage, PostgreSQL, Redis, Prometheus and Velero, integrated and running on
+            infrastructure you control. A load-balanced controller dispatches work through Kafka to
+            invokers that run your actions in the runtime each one needs.
+          </p>
+          <img
+            class="stack-image"
+            src="/img/nuvolaris-stack.png"
+            width="421"
+            height="258"
+            loading="lazy"
+            alt="The platform stack: layered services alongside S3-compatible storage, PostgreSQL, Kubernetes, Redis, Prometheus and Velero, with a load-balanced controller, Kafka and multi-runtime invoker architecture."
+          />
+        </div>
+      </section>
+
+      <!-- 5. Templates -->
+      <section id="templates">
+        <div class="heading centered">
+          <h2 class="no-top-margin">Start from a working application</h2>
+          <p class="paragraph m secondary balanced">
+            No need to start from scratch. Pick a ready-to-use application and customise it to your
+            needs with the AI, on your own infrastructure.
+          </p>
+        </div>
+        {#
+          The catalogue is generated from static/index.json rather than written
+          out here, so adding an application to the organization adds it to this
+          page. `tabbed` gives the groups the tab strip the landing page's rail
+          had; the partial ships them stacked and only turns them into tabpanels
+          once its own script runs, so the whole catalogue stays readable
+          without JavaScript.
+
+          `.panel` is deliberately not set: inside .page-container the
+          viewport-wide variant would overflow the layout.
+        #}
+        {% set tabbed = true %}
+        {% include "starter-cards.html" %}
+        <p class="paragraph m secondary text-centered">
+          Every application runs on your own stack, on hardware you control.
+        </p>
+      </section>
+
+      <!-- 6. The platform behind the assistant -->
+      <section id="platform">
+        <div class="heading centered">
+          <h2 class="no-top-margin">A coding assistant with a complete application platform</h2>
+          <p class="paragraph m secondary balanced">
+            Trustant is built on a full-stack, private, cloud-native environment based on Apache
+            OpenServerless. Your assistant works alongside the environment where your application
+            runs, bringing development and deployment together.
+          </p>
+        </div>
+
+        <!-- Stack diagram, top to bottom. -->
+        <div class="diagram">
+          <div class="stack-layer">
+            <span class="layer-label">Assistant</span>
+            <p class="paragraph m">Trustant coding assistant, connected to your chosen Private AI.</p>
+          </div>
+          <div class="stack-layer">
+            <span class="layer-label">Application</span>
+            <p class="paragraph m">Your application: frontend, backend actions, and APIs.</p>
+          </div>
+          <div class="stack-layer">
+            <span class="layer-label">Platform</span>
+            <p class="paragraph m">Nuvolaris: application runtime, data, and storage services.</p>
+          </div>
+          <div class="stack-layer">
+            <span class="layer-label">Infrastructure</span>
+            <p class="paragraph m">Your infrastructure: PC, server, cluster, or data center.</p>
+          </div>
+        </div>
+
+        <div class="grid columns-3 gap-l">
+          <div class="feature-card">
+            <div class="feature-heading">
+              <h3 class="color-accent no-top-margin">Build the full application</h3>
+              <p class="paragraph s secondary">
+                Bring the frontend, backend actions, APIs, and data connections into one development
+                workflow.
+              </p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-heading">
+              <h3 class="color-accent no-top-margin">Run on a private foundation</h3>
+              <p class="paragraph s secondary">
+                Use Apache OpenServerless as the foundation for application execution and platform
+                services on infrastructure you control.
+              </p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-heading">
+              <h3 class="color-accent no-top-margin">Carry your work into deployment</h3>
+              <p class="paragraph s secondary">
+                Develop locally, then prepare and publish your application to your chosen compatible
+                server or cluster environment.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Frequently asked questions -->
+      <section id="faq">
+        <div class="heading centered">
+          <h2 class="no-top-margin">Frequently asked questions</h2>
+        </div>
+        <div class="accordion-container">
+
+          <details class="accordion-item" name="faq">
+            <summary class="accordion-toggle">
+              <p class="paragraph m bold">What is Trustant?</p>
+              <span class="accordion-chevron fa-solid fa-chevron-down" aria-hidden="true"></span>
+            </summary>
+            <div class="accordion-content">
+              <p>
+                Trustant is a coding assistant for Private AI, built on a full-stack, private,
+                cloud-native environment based on Apache OpenServerless. It brings application
+                development and the environment where your application runs into one workflow.
+              </p>
+            </div>
+          </details>
+
+          <details class="accordion-item" name="faq">
+            <summary class="accordion-toggle">
+              <p class="paragraph m bold">Does Private AI have to run on my PC?</p>
+              <span class="accordion-chevron fa-solid fa-chevron-down" aria-hidden="true"></span>
+            </summary>
+            <div class="accordion-content">
+              <p>
+                No. You can use AI on your PC, an AI workstation such as NVIDIA DGX Spark, a private
+                server, or sovereign infrastructure in a data center you control.
+              </p>
+            </div>
+          </details>
+
+          <details class="accordion-item" name="faq">
+            <summary class="accordion-toggle">
+              <p class="paragraph m bold">Do I need an AI workstation?</p>
+              <span class="accordion-chevron fa-solid fa-chevron-down" aria-hidden="true"></span>
+            </summary>
+            <div class="accordion-content">
+              <p>
+                An AI workstation is one option. Your setup depends on the model you choose and the
+                resources it needs; you can also use local AI or a private AI server.
+              </p>
+            </div>
+          </details>
+
+          <details class="accordion-item" name="faq">
+            <summary class="accordion-toggle">
+              <p class="paragraph m bold">What does Apache OpenServerless provide?</p>
+              <span class="accordion-chevron fa-solid fa-chevron-down" aria-hidden="true"></span>
+            </summary>
+            <div class="accordion-content">
+              <p>
+                Apache OpenServerless provides the foundation for the private application
+                environment underneath Trustant, including application execution and platform
+                services. Trustant adds the coding assistant experience to that foundation.
+              </p>
+            </div>
+          </details>
+
+          <details class="accordion-item" name="faq">
+            <summary class="accordion-toggle">
+              <p class="paragraph m bold">Can I build locally and deploy elsewhere?</p>
+              <span class="accordion-chevron fa-solid fa-chevron-down" aria-hidden="true"></span>
+            </summary>
+            <div class="accordion-content">
+              <p>
+                Yes. Build and test on your PC, then deploy to a compatible server, cluster, or data
+                center environment. Choose the deployment destination and configure its services and
+                access for your application.
+              </p>
+            </div>
+          </details>
+
+          <details class="accordion-item" name="faq">
+            <summary class="accordion-toggle">
+              <p class="paragraph m bold">Is there a free option?</p>
+              <span class="accordion-chevron fa-solid fa-chevron-down" aria-hidden="true"></span>
+            </summary>
+            <div class="accordion-content">
+              <p>
+                Yes. Install Trustant OpenSource and Apache OpenServerless yourself for a free,
+                self-hosted software setup. You provide and operate the infrastructure.
+              </p>
+            </div>
+          </details>
+
+          <details class="accordion-item" name="faq">
+            <summary class="accordion-toggle">
+              <p class="paragraph m bold">What is included in the cluster package?</p>
+              <span class="accordion-chevron fa-solid fa-chevron-down" aria-hidden="true"></span>
+            </summary>
+            <div class="accordion-content">
+              <p>
+                The $10,000 package includes Trustant Desktop and Trustant Cluster for three servers
+                and six virtual machines, with self-healing and backups included.
+              </p>
+            </div>
+          </details>
+
+          <details class="accordion-item" name="faq">
+            <summary class="accordion-toggle">
+              <p class="paragraph m bold">Will my data stay private?</p>
+              <span class="accordion-chevron fa-solid fa-chevron-down" aria-hidden="true"></span>
+            </summary>
+            <div class="accordion-content">
+              <p>
+                Trustant is designed for AI and applications running on infrastructure you control.
+                Keeping data within that environment also depends on your chosen models, connected
+                services, access settings, and deployment configuration.
+              </p>
+            </div>
+          </details>
+
+        </div>
+      </section>
+
+      <!-- 8. Open source and Apache credits -->
+      <section id="credits">
+        <div class="tech-foundation">
+          <!-- The two marks flank the credit they belong to, on one row. -->
+          <div class="foundation-row">
+            <a
+              href="https://openserverless.apache.org"
+              target="_blank"
+              rel="noopener"
+              class="foundation-mark"
+              aria-hidden="true"
+              tabindex="-1"
+            >
+              <img
+                src="/img/apache-openserverless.png"
+                width="1189"
+                height="674"
+                loading="lazy"
+                alt=""
+              />
+            </a>
+            <p class="paragraph m secondary foundation-credit">
+              <a href="https://github.com/trustant/trustant" target="_blank" rel="noopener"
+                >Trustant</a
+              >
+              by <a href="https://nuvolaris.io" target="_blank" rel="noopener">Nuvolaris</a> and
+              <a href="https://apache.org" target="_blank" rel="noopener">Apache</a>
+              <a href="https://openserverless.apache.org" target="_blank" rel="noopener"
+                >OpenServerless</a
+              >
+              are OSI compliant Open Source software, so you can build from source and hack it
+              freely as long as you comply with the licenses.
+            </p>
             <img
-              class="product-logo"
-              src="/logo-nuvolaria.png"
-              alt="NuvolarIA"
-              width="250"
+              class="opensource-logo"
+              src="/img/opensource.png"
+              width="512"
+              height="256"
               loading="lazy"
+              alt="Open Source"
             />
-            <p class="lede">
-              No need to start from scratch. Pick one of our ready-to-use
-              application you can readily customise to your needs with the AI.
-            </p>
           </div>
-
-          {#
-            The row sits above the tab strip: the tabs switch content in place
-            rather than leading anywhere, so the calls to action come first.
-          #}
-          <p class="cta-row cta-row-hero">
-            <a class="cta" href="{{ get_url(path='@/apps/_index.md') | safe }}"
-              >Browse Apps</a
-            >
-            <a class="cta cta-quiet" href="https://n7s.co/nuvolaria-suite" target="_blank" rel="noopener">Register for a Demo</a>
-            <a class="cta cta-quiet" href="https://nuvolaris.io/#/contact" target="_blank" rel="noopener">Contact us</a>
-          </p>
-
-          {% set tabbed = true %}
-          {% include "starter-cards.html" %}
         </div>
       </section>
 
-      <!-- ---------------- Deploy ---------------- -->
-      <section class="panel" id="deploy" data-panel="deploy">
-        <div class="wrap">
-          <div class="panel-head">
-            <h2>Deploy Anywhere</h2>
-            <p class="lede">
-              Deploy in your private server with a complete stack for AI.
-            </p>
-          </div>
+      <!--
+        9. Dialogs. Download frames the installer chooser hosted elsewhere
+        rather than reimplementing it; buy and contact collect details and stop.
+        Payment is not wired up yet, and the button says so rather than
+        pretending to charge anyone.
+      -->
+      <dialog class="panel-dialog is-wide" id="download-dialog" aria-label="Download Trustant Personal">
+        <button type="button" class="panel-dialog-close" data-close-dialog aria-label="Close">
+          <span class="fa-solid fa-xmark icon m" aria-hidden="true"></span>
+        </button>
+        <iframe
+          class="panel-dialog-frame"
+          data-src="https://landing.nuvolaris.org/api/my/v1/download"
+          title="Download Trustant Personal"
+          loading="lazy"
+        ></iframe>
+      </dialog>
 
-          <p class="cta-row cta-row-hero">
-            <a class="cta" href="{{ get_url(path='@/architecture/_index.md') | safe }}"
-              >Architecture</a
-            >
-            <a class="cta cta-quiet" href="https://n7s.co/nuvolaria-suite" target="_blank" rel="noopener">Register for a Demo</a>
-            <a class="cta cta-quiet" href="https://nuvolaris.io/#/contact" target="_blank" rel="noopener">Contact us</a>
-          </p>
-
-          <div class="duo">
-            <div class="duo-figure">
-              <img
-                src="/local-ai.png"
-                alt="The NuvolarIA appliance: a compact AI compute unit stacked on a Nuvolaris server."
-                loading="lazy"
-              />
-            </div>
-            <div class="duo-figure">
-              <img
-                class="stack-diagram"
-                src="/nuvolaris-stack.png"
-                alt="The complete Nuvolaris AI stack: layered platform services alongside S3, PostgreSQL, Kubernetes, Redis, Prometheus and Velero, and the load-balanced controller, Kafka and multi-runtime invoker architecture."
-                loading="lazy"
-              />
-            </div>
-          </div>
-
-          <p class="duo-text">
-            Frontend, APIs, database and storage, hosting, compute, FAAS,
-            security, rate limiting, caching, load balancing, logging and
-            recovery — Kubernetes, S3, PostgreSQL, Redis, Prometheus and Velero,
-            ready to use, integrated and running on your infrastructure.
-          </p>
+      <dialog class="panel-dialog" id="buy-dialog" aria-labelledby="buy-dialog-title">
+        <button type="button" class="panel-dialog-close" data-close-dialog aria-label="Close">
+          <span class="fa-solid fa-xmark icon m" aria-hidden="true"></span>
+        </button>
+        <div class="panel-dialog-body">
+          <h2 class="panel-dialog-title" id="buy-dialog-title">Trustant Developer</h2>
+          <p class="paragraph s secondary">$100/month. Tell us where to send your licence.</p>
+          <form data-buy-form>
+            <label class="panel-field">
+              <span class="panel-label">Name</span>
+              <input class="panel-input" type="text" name="name" autocomplete="name" required />
+            </label>
+            <label class="panel-field">
+              <span class="panel-label">Work email</span>
+              <input class="panel-input" type="email" name="email" autocomplete="email" required />
+            </label>
+            <label class="panel-field">
+              <span class="panel-label">Company</span>
+              <input class="panel-input" type="text" name="company" autocomplete="organization" />
+            </label>
+            <button type="submit" class="button primary full-width margin-top-l">
+              Continue to payment
+            </button>
+          </form>
         </div>
-      </section>
+      </dialog>
 
-      <!-- ---------------- Scale ---------------- -->
-      <section class="panel" id="scale" data-panel="scale">
-        <div class="wrap">
-          <div class="panel-head">
-            <h2>Scale Everywhere</h2>
-            <p class="lede">
-              We can help scaling your AI Application built with Trustable to
-              Local AI, Private organizational AI and Sovereign AI data center.
-            </p>
-          </div>
-
-          <p class="cta-row cta-row-hero">
-            <a class="cta" href="https://n7s.co/nuvolaria-suite" target="_blank" rel="noopener">Register for a Demo</a>
-            <a class="cta cta-quiet" href="https://nuvolaris.io/#/contact" target="_blank" rel="noopener">Contact us</a>
+      <dialog class="panel-dialog" id="contact-dialog" aria-labelledby="contact-dialog-title">
+        <button type="button" class="panel-dialog-close" data-close-dialog aria-label="Close">
+          <span class="fa-solid fa-xmark icon m" aria-hidden="true"></span>
+        </button>
+        <div class="panel-dialog-body">
+          <h2 class="panel-dialog-title" id="contact-dialog-title">Contact Sales</h2>
+          <p class="paragraph s secondary">
+            Trustant Enterprise, $1,000/month. Tell us about your deployment and we will get back to
+            you.
           </p>
-
-          <div class="flow">
-            <div class="flow-item">
-              <div class="flow-figure">
-                <img
-                  src="/local-ai.png"
-                  alt="Local AI: the NuvolarIA desktop appliance."
-                  loading="lazy"
-                />
-              </div>
-              <p class="flow-scope">One desk</p>
-              <h3 class="flow-caption">Local AI</h3>
-              <p class="flow-note">
-                The NuvolarIA appliance on your own desk. Your models and your
-                data never leave the machine.
-              </p>
-            </div>
-
-            <div class="flow-arrow" aria-hidden="true"></div>
-
-            <div class="flow-item">
-              <div class="flow-figure">
-                <img
-                  src="/private-ai.png"
-                  alt="Private AI: a rack-mounted GPU server for an organization."
-                  loading="lazy"
-                />
-              </div>
-              <p class="flow-scope">One organization</p>
-              <h3 class="flow-caption">Private AI</h3>
-              <p class="flow-note">
-                A GPU server in your own rack, serving whole teams behind your
-                firewall.
-              </p>
-            </div>
-
-            <div class="flow-arrow" aria-hidden="true"></div>
-
-            <div class="flow-item">
-              <div class="flow-figure">
-                <img
-                  src="/sovereign-ai.png"
-                  alt="Sovereign AI: a data centre building operated as an AI provider."
-                  loading="lazy"
-                />
-              </div>
-              <p class="flow-scope">One country</p>
-              <h3 class="flow-caption">Sovereign AI</h3>
-              <p class="flow-note">
-                A full data centre run as an AI provider, under your own
-                jurisdiction and control.
-              </p>
-            </div>
-          </div>
-
-          <p class="flow-footnote">
-            Same platform, same applications, same tooling at every tier — only
-            the hardware underneath changes. You are never migrating, only
-            growing.
-          </p>
+          <form data-contact-form>
+            <label class="panel-field">
+              <span class="panel-label">Name</span>
+              <input class="panel-input" type="text" name="name" autocomplete="name" required />
+            </label>
+            <label class="panel-field">
+              <span class="panel-label">Work email</span>
+              <input class="panel-input" type="email" name="email" autocomplete="email" required />
+            </label>
+            <label class="panel-field">
+              <span class="panel-label">Company</span>
+              <input class="panel-input" type="text" name="company" autocomplete="organization" />
+            </label>
+            <label class="panel-field">
+              <span class="panel-label">What are you planning to deploy?</span>
+              <textarea class="panel-input" name="message" rows="3"></textarea>
+            </label>
+            <button type="submit" class="button primary full-width margin-top-l">Send</button>
+          </form>
         </div>
-      </section>
+      </dialog>
+
     </main>
-
-<script>
-      (function () {
-        var ORDER = ["build", "start", "deploy", "scale"];
-
-        var root = document.documentElement;
-        var panels = {};
-        var links = {};
-
-        ORDER.forEach(function (name) {
-          panels[name] = document.querySelector('[data-panel="' + name + '"]');
-          links[name] = document.querySelector('[data-step="' + name + '"]');
-        });
-
-        // Only hide panels once JS is running, so the no-JS page stays readable.
-        root.classList.add("js");
-
-        function show(name) {
-          ORDER.forEach(function (other) {
-            var isActive = other === name;
-            panels[other].classList.toggle("is-active", isActive);
-            if (isActive) {
-              links[other].setAttribute("aria-current", "step");
-            } else {
-              links[other].removeAttribute("aria-current");
-            }
-          });
-        }
-
-        // The steps change only when the visitor picks one.
-        ORDER.forEach(function (name) {
-          links[name].addEventListener("click", function (event) {
-            event.preventDefault();
-            show(name);
-          });
-        });
-
-        show(ORDER[0]);
-      })();
-
-      /*
-       * The motto composes one message at a time: type it, hold it, erase it,
-       * move on. The messages come out of the markup rather than being
-       * repeated here, so the no-JS list stays the single source of the copy.
-       */
-      (function () {
-        var TYPE = 45;
-        var ERASE = 25;
-        var HOLD = 2200;
-        var GAP = 400;
-
-        var motto = document.getElementById("motto");
-        var list = document.getElementById("motto-list");
-        if (!motto || !list) return;
-
-        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-        if (reduced.matches) return;
-
-        var messages = [].map.call(list.children, function (item) {
-          return item.textContent.trim();
-        });
-        if (!messages.length) return;
-
-        /*
-         * The animated line is hidden from assistive tech — a half-composed
-         * string is noise to a screen reader — and the full list stays in the
-         * DOM, visually hidden, as the accessible copy.
-         */
-        list.classList.remove("motto-list");
-        list.classList.add("visually-hidden");
-
-        var line = document.createElement("span");
-        line.className = "motto-line";
-        line.setAttribute("aria-hidden", "true");
-
-        var text = document.createTextNode("");
-        var caret = document.createElement("span");
-        caret.className = "motto-caret";
-        line.appendChild(text);
-        line.appendChild(caret);
-        motto.insertBefore(line, list);
-
-        var index = 0;
-        var count = 0;
-        var erasing = false;
-        var timer = null;
-
-        function step() {
-          var message = messages[index];
-          var wait;
-
-          if (!erasing) {
-            count += 1;
-            text.nodeValue = message.slice(0, count);
-            if (count === message.length) {
-              erasing = true;
-              wait = HOLD;
-            } else {
-              wait = TYPE;
-            }
-          } else {
-            count -= 1;
-            text.nodeValue = message.slice(0, count);
-            if (count === 0) {
-              erasing = false;
-              index = (index + 1) % messages.length;
-              wait = GAP;
-            } else {
-              wait = ERASE;
-            }
-          }
-
-          timer = setTimeout(step, wait);
-        }
-
-        function play() {
-          if (timer === null) timer = setTimeout(step, GAP);
-        }
-
-        function pause() {
-          if (timer === null) return;
-          clearTimeout(timer);
-          timer = null;
-        }
-
-        // Don't type into a backgrounded tab.
-        document.addEventListener("visibilitychange", function () {
-          if (document.hidden) pause();
-          else play();
-        });
-
-        play();
-      })();
-    </script>
 {% endblock content %}
