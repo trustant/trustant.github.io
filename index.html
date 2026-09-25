@@ -1,198 +1,138 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Trustable - Private AI</title>
-    <style>
-      :root {
-        color-scheme: dark;
-        font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", sans-serif;
+
+<head>
+  <meta charset="utf-8" />
+  <title>Trustant — Coming Soon</title>
+  <meta content="Trustant is coming soon." name="description" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Trustant" />
+  <meta property="og:title" content="Trustant — Coming Soon" />
+  <meta property="og:description" content="Trustant is coming soon." />
+  <meta property="og:image" content="/img/logo-trustant.png" />
+
+  <!-- Favicon and icons -->
+  <link rel="icon" href="/favicon/favicon.ico" sizes="32x32" />
+  <link rel="icon" href="/favicon/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
+
+  <!-- Preload fonts -->
+  <link rel="preload" href="/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
+
+  <style>
+    @font-face {
+      font-family: "InterVariable";
+      src: url("/fonts/InterVariable.woff2") format("woff2");
+      font-weight: 100 900;
+      font-display: swap;
+    }
+
+    :root {
+      --bg: #0b0a09;
+      --fg: #f5f1ec;
+      --muted: #a09a93;
+      --accent: #d9702f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "InterVariable", system-ui, -apple-system, "Segoe UI", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 16px;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(60% 50% at 50% 42%, rgba(217, 112, 47, 0.22), transparent 70%);
+      pointer-events: none;
+    }
+
+    main {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .logo {
+      width: min(420px, 82vw);
+      height: auto;
+      /* the logo asset is black on white — invert it for the dark page */
+      filter: invert(1);
+    }
+
+    .mascot {
+      width: min(300px, 62vw);
+      height: auto;
+      animation: float 5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
       }
 
-      * {
-        box-sizing: border-box;
+      50% {
+        transform: translateY(-12px);
       }
+    }
 
-      html,
-      body {
-        width: 100%;
-        min-height: 100%;
-        margin: 0;
+    @media (prefers-reduced-motion: reduce) {
+      .mascot {
+        animation: none;
       }
+    }
 
-      body {
-        background: #071018;
-        color: #fff;
-        overflow-x: hidden;
-      }
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
 
-      .hero {
-        position: relative;
-        min-height: 100svh;
-        overflow: hidden;
-        isolation: isolate;
-      }
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 3.5vw, 1.15rem);
+      line-height: 1.6;
+    }
+  </style>
+</head>
 
-      .hero::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: 1;
-        background:
-          linear-gradient(90deg, rgba(3, 10, 16, 0.2), transparent 38%),
-          linear-gradient(180deg, rgba(3, 10, 16, 0.18), transparent 26%);
-        pointer-events: none;
-      }
+<body>
+  <main>
+    <img class="logo" src="/img/logo-trustant.png" alt="Trustant" />
+    <img class="mascot" src="/img/trusty-ant.png" alt="Trusty, the Trustant ant mascot, giving a thumbs up" />
+    <h1>Coming soon!</h1>
+    <p>We're busy building. Check back shortly.</p>
+  </main>
+</body>
 
-      .hero__image {
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-      }
-
-      .hero__copy {
-        position: absolute;
-        top: clamp(26px, 3.8vw, 44px);
-        left: clamp(28px, 4.5vw, 56px);
-        z-index: 2;
-        display: flex;
-        gap: clamp(18px, 2.6vw, 34px);
-        align-items: center;
-        width: calc(100vw - clamp(28px, 4.5vw, 56px) * 2);
-      }
-
-      .brand {
-        display: flex;
-        flex: 0 0 auto;
-        gap: clamp(8px, 1vw, 12px);
-        align-items: center;
-        color: #050505;
-        text-shadow: 0 1px 12px rgba(255, 255, 255, 0.45);
-      }
-
-      .brand__logo {
-        display: block;
-        width: clamp(52px, 6.1vw, 82px);
-        height: auto;
-      }
-
-      .brand__name {
-        font-size: clamp(24px, 3vw, 42px);
-        font-weight: 820;
-        line-height: 1;
-        letter-spacing: 0;
-      }
-
-      .hero__title {
-        display: flex;
-        flex: 1 1 auto;
-        min-width: 0;
-        gap: 0.3em;
-        align-items: baseline;
-        margin: 0;
-        color: #fff;
-        font-size: clamp(23px, 2.7vw, 40px);
-        font-weight: 780;
-        line-height: 1.04;
-        letter-spacing: 0;
-        text-shadow: 0 3px 18px rgba(0, 0, 0, 0.62);
-      }
-
-      .hero__accent {
-        flex: 0 0 auto;
-        color: #ffd64d;
-      }
-
-      .hero__main {
-        min-width: 0;
-      }
-
-      @media (orientation: portrait), (max-width: 720px) {
-        .hero {
-          min-height: 100svh;
-        }
-
-        .hero::after {
-          background:
-            linear-gradient(180deg, rgba(3, 10, 16, 0.22), transparent 28%),
-            linear-gradient(180deg, transparent 58%, rgba(3, 10, 16, 0.28));
-        }
-
-        .hero__image {
-          object-position: center top;
-        }
-
-        .hero__copy {
-          top: clamp(28px, 4.5vh, 48px);
-          left: 50%;
-          flex-direction: column;
-          gap: clamp(16px, 2.4vh, 28px);
-          width: min(88vw, 520px);
-          transform: translateX(-50%);
-          text-align: center;
-        }
-
-        .brand {
-          flex-direction: column;
-          gap: 8px;
-        }
-
-        .brand__logo {
-          width: clamp(76px, 17vw, 118px);
-        }
-
-        .brand__name {
-          font-size: clamp(30px, 8vw, 54px);
-        }
-
-        .hero__title {
-          flex-direction: column;
-          gap: 0.1em;
-          align-items: center;
-          font-size: clamp(34px, 9.4vw, 66px);
-          line-height: 1;
-        }
-      }
-
-      @media (max-width: 420px) {
-        .hero__copy {
-          width: min(88vw, 360px);
-        }
-
-        .hero__title {
-          font-size: clamp(30px, 9vw, 38px);
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <main class="hero" aria-label="Trustable private AI landing page">
-      <picture>
-        <source srcset="mobile.png" media="(orientation: portrait), (max-width: 720px)">
-        <img
-          class="hero__image"
-          src="desktop.png"
-          alt="Trustable private AI workstation in a data center">
-      </picture>
-
-      <section class="hero__copy" aria-labelledby="hero-title">
-        <div class="brand" aria-label="Trustable">
-          <img class="brand__logo" src="trustable-logo.svg" alt="">
-          <span class="brand__name">Trustable</span>
-        </div>
-
-        <h1 class="hero__title" id="hero-title">
-          <span class="hero__main">Build Apps with</span>
-          <span class="hero__accent">Local AI</span>
-        </h1>
-      </section>
-    </main>
-  </body>
 </html>
