@@ -5,3 +5,8 @@ public/
 playground.md
 __pycache__/
 trusite/
+# The video production tree: ~385MB of generation and post-production
+# artifacts (per-scene renders, discarded takes, reference audio). The
+# published output is static/intro.mp4, which IS tracked. Specs 33-37
+# document this toolchain and refer to paths that live only locally.
+video/
