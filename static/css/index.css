@@ -766,6 +766,13 @@ section {
   padding-bottom: 24px;
 }
 
+/* The closing legal notes read as a centered colophon, not a column of
+   content. A dedicated class because the two `.centered` rules in this
+   stylesheet are both nested inside other selectors. */
+.footer-notes {
+  text-align: center;
+}
+
 .footer-menu {
   gap: 16px;
   grid-template-rows: auto;
