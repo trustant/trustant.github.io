@@ -1,0 +1,153 @@
+1
+00:00:00,120 --> 00:00:02,330
+Ciao, sono Trusty.
+
+2
+00:00:02,330 --> 00:00:04,880
+Ho un'idea per una
+nuova applicazione.
+
+3
+00:00:04,880 --> 00:00:07,710
+Il vibe coding è fantastico.
+
+4
+00:00:07,710 --> 00:00:11,850
+Descrivo semplicemente ciò che
+voglio e l'IA crea l'applicazione
+
+5
+00:00:11,850 --> 00:00:12,820
+per me.
+
+6
+00:00:12,820 --> 00:00:13,360
+Guarda!
+
+7
+00:00:13,360 --> 00:00:17,510
+In pochi prompt,
+l'applicazione appare.
+
+8
+00:00:17,510 --> 00:00:19,150
+Ma c' è un problema.
+
+9
+00:00:19,150 --> 00:00:23,040
+Per farlo, potrei inviare le mie
+conversazioni, il mio codice, i
+
+10
+00:00:23,040 --> 00:00:29,470
+miei dati e persino segreti nel
+cloud.
+
+11
+00:00:29,470 --> 00:00:33,300
+E se sto creando applicazioni per
+un'azienda, questo può diventare un
+
+12
+00:00:33,300 --> 00:00:36,550
+problema serio.
+
+13
+00:00:36,550 --> 00:00:37,510
+Facile!
+
+14
+00:00:37,510 --> 00:00:39,320
+Userò un'IA privata.
+
+15
+00:00:39,320 --> 00:00:42,850
+Ora i miei prompt, il mio codice e
+i miei dati possono rimanere
+
+16
+00:00:42,850 --> 00:00:46,100
+proprio qui.
+
+17
+00:00:46,100 --> 00:00:47,150
+Ottimo.
+
+18
+00:00:47,150 --> 00:00:49,510
+Ho creato la mia
+applicazione privatamente.
+
+19
+00:00:49,510 --> 00:00:51,400
+Aspetta un momento.
+
+20
+00:00:51,400 --> 00:00:56,220
+Ho creato la mia applicazione
+privatamente, ma dove la farò girare?
+
+21
+00:00:56,220 --> 00:01:00,560
+Una vera applicazione ha bisogno di
+calcolo, database, archiviazione,
+
+22
+00:01:00,560 --> 00:01:01,690
+API, code.
+
+23
+00:01:01,690 --> 00:01:02,780
+Ha bisogno di un cloud.
+
+24
+00:01:02,780 --> 00:01:07,100
+Quindi sono tornato
+al punto di partenza.
+
+25
+00:01:07,100 --> 00:01:12,600
+A meno che non renda
+privato anche il cloud.
+
+26
+00:01:12,600 --> 00:01:15,660
+È questo che rende
+TrustAnt diverso.
+
+27
+00:01:15,660 --> 00:01:18,460
+Sotto il cofano, gira su Nuvolaris.
+
+28
+00:01:18,460 --> 00:01:22,350
+Posso creare applicazioni complete,
+un pianificatore di viaggi, un
+
+29
+00:01:22,350 --> 00:01:25,830
+assistente per documenti, un
+chatbot di supporto, strumenti
+
+30
+00:01:25,830 --> 00:01:28,840
+interni, tutto.
+
+31
+00:01:28,840 --> 00:01:32,400
+Posso iniziare qui con la mia
+workstation IA personale, poi
+
+32
+00:01:32,400 --> 00:01:36,210
+passare al mio server privato e,
+quando la mia attività cresce,
+
+33
+00:01:36,210 --> 00:01:40,440
+posso scalare su un intero cluster
+senza modifiche o utilizzare il mio
+
+34
+00:01:40,440 --> 00:01:43,440
+provider cloud sovrano.
