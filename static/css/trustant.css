@@ -849,6 +849,11 @@
   }
 }
 
+/* Key words of the hero title, picked out in the brand orange. */
+.accent-text {
+  color: var(--color-accent);
+}
+
 /* ---------- Tighter joins around the hero ---------- */
 
 /* Every section carries 60px top and bottom padding, so neighbours stack to
@@ -861,6 +866,19 @@
 #pricing {
   padding-top: 24px;
   padding-bottom: 32px;
+}
+
+/* The open source credits follow the prices as one more rounded card, so they
+   join the pricing run with the same tight spacing and keep their centring
+   over feature-card's left alignment. */
+#credits {
+  padding-top: 0;
+  padding-bottom: 32px;
+}
+
+#credits .tech-foundation {
+  margin-top: 0;
+  align-items: center;
 }
 
 /* The credits open the section, so they need no extra lead-in of their own. */
